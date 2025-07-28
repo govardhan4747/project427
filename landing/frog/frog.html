@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Letter from the Pond</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Caveat:wght@500&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for the page */
+        body {
+            font-family: 'Playfair Display', serif;
+            overflow: hidden;
+            background-color: #0c1414; /* Dark green-blue background */
+        }
+
+        .font-handwriting {
+            font-family: 'Caveat', cursive;
+        }
+
+        /* Styles for the background image container and images */
+        #background-slideshow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        #background-slideshow img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            /* Mobile-first responsive styles */
+            width: 35vw;
+            max-width: 180px;
+            height: auto;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            object-fit: cover;
+            opacity: 0;
+            filter: blur(2px);
+            will-change: transform, opacity;
+        }
+
+        /* Tablet and larger screens */
+        @media (min-width: 640px) {
+            #background-slideshow img {
+                width: 25vw;
+                max-width: 220px;
+            }
+        }
+        
+        /* Desktop screens */
+        @media (min-width: 1024px) {
+            #background-slideshow img {
+                width: 20vw;
+                max-width: 260px;
+            }
+        }
+
+
+        /* Canvas for firefly effect */
+        #firefly-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; /* Behind content, in front of photos */
+            pointer-events: none; /* Allows clicks to go through */
+        }
+
+        /* Style for the typing cursor, controlled by JavaScript */
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        .blinking-cursor {
+            animation: blink 1s step-end infinite;
+            margin-left: 3px;
+            color: #f1f5f9;
+        }
+        
+        /* Animation for the frog jump, now applied to the frog group specifically */
+        .frog-jumper {
+            animation: jump 3.5s infinite ease-in-out;
+            animation-delay: 2s;
+            transform-origin: bottom center; /* Set the origin for scaling */
+        }
+
+        @keyframes jump {
+            0%, 60%, 100% {
+                transform: translateY(0) scale(1, 1);
+            }
+            65% {
+                transform: translateY(0) scale(1.1, 0.9); /* Squash before jump */
+            }
+            85% {
+                transform: translateY(-20px) scale(0.9, 1.1); /* Jump up and stretch */
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Background elements -->
+    <div id="background-slideshow">
+        <!-- New Frog and Pond Themed Image URLs -->
+        <img src="https://images.unsplash.com/photo-1593884782433-267d4157ab53?q=80&w=2000" alt="Green frog on a leaf">
+        <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=2000" alt="Lily pads on a calm pond">
+        <img src="https://images.unsplash.com/photo-1475189739312-5151b68925f7?q=80&w=2000" alt="Misty morning over a swamp">
+        <img src="https://images.unsplash.com/photo-1576785388348-17a854991993?q=80&w=2000" alt="Close up of a tree frog">
+        <img src="https://images.unsplash.com/photo-1542487154-45337b54d583?q=80&w=2000" alt="Water lilies in bloom">
+        <img src="https://images.unsplash.com/photo-1518495973542-4542c06a5843?q=80&w=2000" alt="Sunlight through a dense, green forest canopy">
+        <img src="https://images.unsplash.com/photo-1610247942225-527e7d3e117e?q=80&w=2000" alt="A small frog resting on a branch">
+        <img src="https://images.unsplash.com/photo-1440330033336-7dc69a195e87?q=80&w=2000" alt="Foggy river in a forest">
+    </div>
+    <canvas id="firefly-canvas"></canvas>
+
+    <!-- Main content area -->
+    <main class="w-full h-screen flex justify-center items-center p-4 relative z-10">
+        <!-- Container with green glow and responsive padding -->
+        <div class="w-full max-w-2xl bg-black/30 backdrop-blur-sm text-white p-6 sm:p-8 md:p-12 rounded-xl shadow-2xl border border-green-400/20 shadow-[0_0_30px_rgba(74,222,128,0.4)]">
+            <!-- Responsive heading -->
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 text-center">A Note from the Pond</h1>
+            <!-- Responsive handwriting text -->
+            <div class="font-handwriting text-xl sm:text-2xl md:text-3xl space-y-6 text-gray-100 leading-relaxed">
+                <p id="line1"></p>
+                <p id="line2"></p>
+                <p id="line3" class="text-center"></p>
+            </div>
+        </div>
+    </main>
+
+    <!-- New Frog SVG at the bottom center with responsive size -->
+    <div class="fixed bottom-0 left-1/2 -translate-x-1/2 mb-1 z-20 w-20 h-20 md:w-24 md:h-24">
+        <svg class="w-full h-full" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <g style="filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4));">
+                <!-- Lily Pad (Static) -->
+                <path d="M 20 180 C 20 160, 180 160, 180 180 C 180 200, 20 200, 20 180 Z" fill="#22c55e" />
+                <path d="M 120 180 L 150 175 L 130 190 Z" fill="#16a34a" />
+
+                <!-- Frog (Animated) -->
+                <g class="frog-jumper">
+                    <!-- Back Legs -->
+                    <path d="M 50 175 C 20 170, 10 140, 30 120 C 40 130, 50 150, 50 175 Z" fill="#4ade80"/>
+                    <path d="M 150 175 C 180 170, 190 140, 170 120 C 160 130, 150 150, 150 175 Z" fill="#4ade80"/>
+                    <!-- Body -->
+                    <path d="M 50 170 C 40 100, 160 100, 150 170 Z" fill="#4ade80"/>
+                    <!-- Eyes -->
+                    <circle cx="75" cy="110" r="20" fill="#a3e635"/>
+                    <circle cx="125" cy="110" r="20" fill="#a3e635"/>
+                    <circle cx="75" cy="110" r="10" fill="black"/>
+                    <circle cx="125" cy="110" r="10" fill="black"/>
+                    <circle cx="78" cy="107" r="4" fill="white"/>
+                    <circle cx="128" cy="107" r="4" fill="white"/>
+                    <!-- Front Legs -->
+                    <path d="M 80 170 C 70 180, 60 180, 65 170 Z" fill="#4ade80"/>
+                    <path d="M 120 170 C 130 180, 140 180, 135 170 Z" fill="#4ade80"/>
+                     <!-- Mouth -->
+                    <path d="M 80 145 Q 100 155, 120 145" stroke="black" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                </g>
+            </g>
+        </svg>
+    </div>
+
+    <script>
+        window.addEventListener('load', () => {
+            // --- Text Animation Control ---
+            const line1El = document.getElementById('line1');
+            const line2El = document.getElementById('line2');
+            const line3El = document.getElementById('line3');
+
+            // New frog-themed text
+            const text1 = "Listen closely... can you hear the gentle chorus of the pond? The crickets are singing, and the fireflies have begun to dance.";
+            const text2 = "Each ripple on the water tells a story, every croak is a verse in a song as old as the moonlight. This is a place of quiet magic.";
+            const text3 = "May you find a moment of peace here.";
+
+            function typeWriter(element, text, onComplete) {
+                let i = 0;
+                const speed = 50;
+                element.innerHTML = '';
+
+                const cursor = document.createElement('span');
+                cursor.className = 'blinking-cursor';
+                cursor.innerHTML = '|';
+                element.appendChild(cursor);
+
+                const typeInterval = setInterval(() => {
+                    if (i < text.length) {
+                        cursor.insertAdjacentText('beforebegin', text.charAt(i));
+                        i++;
+                    } else {
+                        clearInterval(typeInterval);
+                        cursor.remove();
+                        if (onComplete) onComplete();
+                    }
+                }, speed);
+            }
+            
+            setTimeout(() => {
+                typeWriter(line1El, text1, () => {
+                    setTimeout(() => {
+                        typeWriter(line2El, text2, () => {
+                            setTimeout(() => {
+                                typeWriter(line3El, text3, null);
+                            }, 700);
+                        });
+                    }, 700);
+                });
+            }, 1500);
+
+
+            // --- Background Photo Animation ---
+            const photoContainer = document.getElementById('background-slideshow');
+            const allImages = Array.from(photoContainer.getElementsByTagName('img'));
+            const activeObjects = [];
+            let inactiveImages = [...allImages];
+            let MAX_VISIBLE_PHOTOS; // Will be set in setupPhotos
+            let photoContainerRect;
+
+            function setupPhotos() {
+                photoContainerRect = photoContainer.getBoundingClientRect();
+                // Dynamically set number of photos based on screen width
+                MAX_VISIBLE_PHOTOS = window.innerWidth < 768 ? 3 : 5;
+                
+                activeObjects.length = 0;
+                inactiveImages = [...allImages];
+                
+                for (let i = 0; i < MAX_VISIBLE_PHOTOS; i++) {
+                    if (inactiveImages.length > 0) {
+                        spawnImage(inactiveImages.shift(), true);
+                    }
+                }
+            }
+            
+            function spawnImage(img, isInitialSpawn = false) {
+                const imgWidth = img.offsetWidth;
+                const imgHeight = img.offsetHeight;
+                if (imgWidth === 0) return;
+
+                let x, y, vx, vy;
+
+                if (isInitialSpawn) {
+                    let positionOk = false;
+                    let attempts = 0;
+                    while(!positionOk && attempts < 100) {
+                        x = Math.random() * (photoContainerRect.width - imgWidth);
+                        y = Math.random() * (photoContainerRect.height - imgHeight);
+                        positionOk = true;
+                        for (const other of activeObjects) {
+                            const dx = (x + imgWidth / 2) - (other.x + other.width / 2);
+                            const dy = (y + imgHeight / 2) - (other.y + other.height / 2);
+                            if (Math.sqrt(dx*dx + dy*dy) < (imgWidth / 2 + other.width / 2)) {
+                                positionOk = false;
+                                break;
+                            }
+                        }
+                        attempts++;
+                    }
+                } else {
+                    const side = Math.floor(Math.random() * 4);
+                    if (side === 0) { x = Math.random() * photoContainerRect.width; y = -imgHeight; } 
+                    else if (side === 1) { x = photoContainerRect.width; y = Math.random() * photoContainerRect.height; }
+                    else if (side === 2) { x = Math.random() * photoContainerRect.width; y = photoContainerRect.height; }
+                    else { x = -imgWidth; y = Math.random() * photoContainerRect.height; }
+                }
+                
+                const targetX = photoContainerRect.width / 2 + (Math.random() - 0.5) * 400;
+                const targetY = photoContainerRect.height / 2 + (Math.random() - 0.5) * 400;
+                const angle = Math.atan2(targetY - y, targetX - x);
+                const speed = 0.5 + Math.random() * 0.5;
+                vx = Math.cos(angle) * speed;
+                vy = Math.sin(angle) * speed;
+
+                activeObjects.push({
+                    el: img, x, y, vx, vy,
+                    width: imgWidth, height: imgHeight,
+                    opacity: 0, state: 'fading-in'
+                });
+            }
+
+            function animatePhotos() {
+                for (let i = activeObjects.length - 1; i >= 0; i--) {
+                    const obj = activeObjects[i];
+
+                    if (obj.state === 'fading-in') {
+                        obj.opacity += 0.01;
+                        if (obj.opacity >= 0.5) { obj.opacity = 0.5; obj.state = 'active'; }
+                    } else if (obj.state === 'fading-out') {
+                        obj.opacity -= 0.005;
+                        if (obj.opacity <= 0) {
+                            inactiveImages.push(obj.el);
+                            activeObjects.splice(i, 1);
+                            if (inactiveImages.length > 0) spawnImage(inactiveImages.shift());
+                            continue;
+                        }
+                    }
+
+                    obj.x += obj.vx;
+                    obj.y += obj.vy;
+
+                    if (obj.state === 'active' && (obj.x > photoContainerRect.width || obj.x < -obj.width || obj.y > photoContainerRect.height || obj.y < -obj.height)) {
+                        obj.state = 'fading-out';
+                    }
+
+                    for (let j = i - 1; j >= 0; j--) {
+                        const other = activeObjects[j];
+                        if (obj.state !== 'active' || other.state !== 'active') continue;
+
+                        const dx = (obj.x + obj.width / 2) - (other.x + other.width / 2);
+                        const dy = (obj.y + obj.height / 2) - (other.y + other.height / 2);
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        const minDistance = (obj.width / 2) + (other.width / 2);
+
+                        if (distance < minDistance) {
+                           const overlap = minDistance - distance;
+                           const angle = Math.atan2(dy, dx);
+                           const moveX = (overlap / 2) * Math.cos(angle);
+                           const moveY = (overlap / 2) * Math.sin(angle);
+                           obj.x += moveX;
+                           obj.y += moveY;
+                           other.x -= moveX;
+                           other.y -= moveY;
+
+                           const tempVx = obj.vx;
+                           const tempVy = obj.vy;
+                           obj.vx = other.vx;
+                           obj.vy = other.vy;
+                           other.vx = tempVx;
+                           other.vy = tempVy;
+                        }
+                    }
+                    
+                    obj.el.style.opacity = obj.opacity;
+                    obj.el.style.transform = `translate3d(${obj.x}px, ${obj.y}px, 0)`;
+                }
+            }
+
+            // --- Firefly Effect ---
+            const canvas = document.getElementById('firefly-canvas');
+            const ctx = canvas.getContext('2d');
+            let fireflies = [];
+
+            function setupFireflies() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                const fireflyCount = Math.floor(canvas.width / 20);
+                fireflies = [];
+                for (let i = 0; i < fireflyCount; i++) {
+                    fireflies.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        radius: Math.random() * 2 + 1,
+                        vx: (Math.random() - 0.5) * 0.5,
+                        vy: (Math.random() - 0.5) * 0.5,
+                        opacity: Math.random() * 0.5 + 0.2,
+                        opacityDirection: 1
+                    });
+                }
+            }
+
+            function drawFireflies() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (const fly of fireflies) {
+                    ctx.beginPath();
+                    ctx.arc(fly.x, fly.y, fly.radius, 0, Math.PI * 2, false);
+                    ctx.fillStyle = `rgba(192, 255, 136, ${fly.opacity})`; // Soft yellow-green
+                    ctx.fill();
+                }
+                updateFireflies();
+            }
+
+            function updateFireflies() {
+                for (const fly of fireflies) {
+                    fly.x += fly.vx;
+                    fly.y += fly.vy;
+
+                    if (fly.opacityDirection === 1) {
+                        fly.opacity += 0.01;
+                        if (fly.opacity >= 1) fly.opacityDirection = -1;
+                    } else {
+                        fly.opacity -= 0.01;
+                        if (fly.opacity <= 0.1) fly.opacityDirection = 1;
+                    }
+
+                    if (fly.x < -10) fly.x = canvas.width + 10;
+                    if (fly.x > canvas.width + 10) fly.x = -10;
+                    if (fly.y < -10) fly.y = canvas.height + 10;
+                    if (fly.y > canvas.height + 10) fly.y = -10;
+                }
+            }
+
+            // --- Main Animation Loop ---
+            function mainLoop() {
+                animatePhotos();
+                drawFireflies();
+                requestAnimationFrame(mainLoop);
+            }
+
+            // --- Initialization ---
+            setupPhotos();
+            setupFireflies();
+            mainLoop();
+
+            window.addEventListener('resize', () => {
+                clearTimeout(window.resizeTimeout);
+                window.resizeTimeout = setTimeout(() => {
+                    setupPhotos();
+                    setupFireflies();
+                }, 250);
+            });
+        });
+    </script>
+
+</body>
+</html>

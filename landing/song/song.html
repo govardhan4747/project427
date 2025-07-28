@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Song Section - Project 427</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <style>
+    /* ==================================================
+      SONG PAGE - FINAL RESPONSIVE STYLESHEET
+    ================================================== */
+
+    /* --- General & Animated Background --- */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      overflow-x: hidden;
+      background: linear-gradient(132deg, #0a0a0a, #000000, #09095a, #000000, #222222);
+      background-size: 400% 400%;
+      animation: BackgroundGradient 15s ease infinite;
+    }
+
+    @keyframes BackgroundGradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* --- Main Section Layout --- */
+    .song-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem 1.5rem;
+      gap: 2.5rem;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    /* --- Video Block --- */
+    .video-block, .details-container {
+      width: 100%;
+      max-width: 550px;
+    }
+
+    .video-container {
+      margin-top: 2rem;
+      position: relative;
+      width: 100%;
+    }
+
+    video {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      display: block;
+      outline: none;
+      border: none;
+      background-color: transparent;
+      transition: box-shadow 1s ease-in-out;
+    }
+
+    /* --- Glow Animation when playing --- */
+    video.glow {
+      animation: pulseGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% {
+        box-shadow: 0 0 20px rgba(255, 182, 193, 0.4), 0 0 40px rgba(255, 182, 193, 0.2);
+      }
+      50% {
+        box-shadow: 0 0 40px rgba(255, 182, 193, 0.6), 0 0 80px rgba(255, 182, 193, 0.3);
+      }
+    }
+
+    /* --- Custom Controls --- */
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .controls button {
+      background: rgba(248, 208, 111, 0.1);
+      color: #F8D06F;
+      border: 1px solid rgba(248, 208, 111, 0.4);
+      padding: 10px 15px;
+      border-radius: 20px;
+      width: 60px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 0 8px rgba(248, 208, 111, 0.3);
+      backdrop-filter: blur(8px);
+    }
+
+    .controls button:hover {
+      transform: scale(1.05);
+    }
+
+    /* --- Waveform --- */
+    #waveform {
+      width: 100%;
+      height: 70px;
+      margin-top: 1rem;
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    /* --- Details Container --- */
+    .details-container {
+      max-width: 20rem;
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .song-title {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      background: linear-gradient(to right, #00bfff, #90e0ef);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .song-meta {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 1.5rem;
+    }
+
+    .song-meta li {
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+
+    .song-description h3 {
+      font-weight: 400;
+      color: #00bfff;
+      margin-bottom: 10px;
+    }
+
+    .song-description p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: #d1d1d1;
+      text-align: justify;
+    }
+
+    /* ==================================================
+      Responsive Styles
+    ================================================== */
+    @media (min-width: 992px) {
+      .song-section {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 5vh 6vw;
+        gap: 40px;
+      }
+
+      .video-block {
+        flex: 1.5;
+        max-width: 700px;
+      }
+
+      .details-container {
+        flex: 1;
+        max-width: 500px;
+        padding: 30px 35px;
+      }
+
+      video { border-radius: 16px; }
+      .controls { gap: 15px; margin-top: 20px; }
+      .controls button { padding: 12px 20px; width: 70px; font-size: 1rem; }
+      #waveform { height: 80px; margin-top: 15px; }
+      .song-title { font-size: 2.5rem; }
+      .song-meta li { font-size: 1rem; }
+      .song-description p { font-size: 0.95rem; }
+    }
+
+
+    /* Extra small devices (phones, < 576px) */
+    @media (max-width: 575.98px) {
+      .song-title {
+        font-size: 1.5rem;
+      }
+
+      .controls button {
+        padding: 8px 12px;
+        width: 55px;
+        font-size: 0.8rem;
+      }
+
+      .song-description p {
+        font-size: 0.85rem;
+      }
+
+      #waveform {
+        height: 60px;
+      }
+
+      .details-container {
+        min-width: 90%;
+        padding: 1rem;
+      }
+    }
+
+    /* Small devices (phones, 576px - 767px) */
+    @media (min-width: 576px) and (max-width: 767.98px) {
+      .song-title {
+        font-size: 1.75rem;
+      }
+
+      .controls button {
+        padding: 10px 15px;
+        width: 60px;
+        font-size: 0.9rem;
+      }
+
+      .song-description p {
+        font-size: 0.88rem;
+      }
+
+      #waveform {
+        height: 65px;
+      }
+
+      .details-container {
+        min-width: 90%;
+        padding: 1.25rem;
+      }
+    }
+
+    /* Medium devices (tablets, 768px - 991px) */
+    @media (min-width: 768px) and (max-width: 991.98px) {
+      .song-section {
+        flex-direction: row;
+        gap: 2rem;
+      }
+
+      .song-title {
+        font-size: 2.2rem;
+      }
+
+      .controls button {
+        padding: 12px 18px;
+        width: 65px;
+        font-size: 1rem;
+      }
+
+      .details-container {
+        padding: 1.5rem 2rem;
+        max-width: 480px;
+      }
+
+      #waveform {
+        height: 75px;
+      }
+    }
+
+    /* Large devices (desktops, 992px - 1199px) */
+    @media (min-width: 992px) and (max-width: 1199.98px) {
+      .song-title {
+        font-size: 2.4rem;
+      }
+
+      .controls button {
+        width: 70px;
+      }
+
+      .details-container {
+        padding: 2rem;
+      }
+    }
+
+    /* Extra large devices (1200px and up) */
+    @media (min-width: 1200px) {
+      .song-section {
+        gap: 60px;
+      }
+
+      .song-title {
+        font-size: 2.8rem;
+      }
+
+      .details-container {
+        max-width: 520px;
+        padding: 2.5rem;
+      }
+
+      .controls button {
+        width: 75px;
+        font-size: 1.05rem;
+      }
+
+      #waveform {
+        height: 90px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<section class="song-section">
+
+  <figure class="video-block">
+    <div class="video-container">
+      <video id="songVideo" src="she is the light.mp4" poster="song-poster.jpg">
+        Your browser does not support the video tag.
+      </video>
+      <canvas id="waveform"></canvas>
+      <div class="controls">
+        <button id="backward" aria-label="Rewind">«</button>
+        <button id="playPause" aria-label="Play">▶</button>
+        <button id="forward" aria-label="Fast Forward">»</button>
+      </div>
+    </div>
+  </figure>
+
+  <div class="details-container">
+    <h1 class="song-title">She is the Light</h1>
+    <ul class="song-meta">
+      <li><strong>Singer:</strong> SUNO AI</li>
+      <li><strong>Lyricist:</strong> Govardhan</li>
+      <li><strong>Co-Lyricist:</strong> ChatGPT</li>
+    </ul>
+    <div class="song-description">
+      <h3>Why I Wrote This Song</h3>
+      <p>
+        I always wanted to write a song for you ever since we became close... I thought this would be the perfect moment to finally share it.
+      </p>
+      <p>
+        Back then, my English was not up to mark, but I had some lyrics in mind. With a little help (thanks to ChatGPT), I made this version.
+      </p>
+      <p>
+        It's sung using SUNO AI because, well… my singing might be horrible.
+      </p>
+      <p>
+        This isn’t the final version — I know it can be much better, and one day, I’ll make it perfect. But for now, I hope you enjoy it...
+      </p>
+    </div>
+  </div>
+
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // --- 1. Select All Elements ---
+  const video = document.getElementById("songVideo");
+  const playPauseBtn = document.getElementById("playPause");
+  const backwardBtn = document.getElementById("backward");
+  const forwardBtn = document.getElementById("forward");
+  
+  const canvas = document.getElementById("waveform");
+  const ctx = canvas.getContext("2d");
+
+  // --- 2. State & Setup ---
+  let waveformAnimationId;
+  const bars = 120; // Number of bars in the waveform
+  
+  // Create a state object for GSAP to animate for smoother transitions
+  const animationState = {
+    opacity: 0,
+    amplitude: 0.05 // Start with a slight "hum"
+  };
+
+  // --- 3. Waveform Canvas Logic ---
+  function resizeCanvas() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+  
+  function drawWaveform() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const midY = canvas.height / 2;
+    const barWidth = canvas.width / bars;
+    const time = Date.now() / 250; // Slow down the wave movement slightly
+
+    for (let i = 0; i < bars; i++) {
+      const sin1 = Math.sin(time + i * 0.2);
+      const sin2 = Math.sin(time + i * 0.3 + 5);
+      // Use the animated amplitude from our state object
+      const height = (sin1 + sin2) * (midY * animationState.amplitude);
+
+      // Use the animated opacity from our state object
+      ctx.fillStyle = `rgba(248, 208, 111, ${animationState.opacity})`; // Match gold button color
+      ctx.fillRect(i * barWidth, midY - height / 2, barWidth - 2, height);
+    }
+    waveformAnimationId = requestAnimationFrame(drawWaveform);
+  }
+
+  function startWaveform() {
+    if (!waveformAnimationId) {
+      drawWaveform();
+    }
+    // Animate the waveform to be visible and active
+    gsap.to(animationState, { opacity: 0.6, amplitude: 0.4, duration: 0.8, ease: "power2.out" });
+  }
+
+  function stopWaveform() {
+    // Animate the waveform to fade out and quiet down
+    gsap.to(animationState, { opacity: 0, amplitude: 0.05, duration: 1.5, ease: "power2.out" });
+  }
+  
+  // --- 4. Event Listeners ---
+  playPauseBtn.addEventListener("click", () => {
+    video.paused ? video.play() : video.pause();
+  });
+
+  backwardBtn.addEventListener("click", () => {
+    video.currentTime = Math.max(0, video.currentTime - 10); // Rewind 10s
+  });
+
+  forwardBtn.addEventListener("click", () => {
+    video.currentTime += 10; // Forward 10s
+  });
+
+  video.addEventListener("play", () => {
+    playPauseBtn.innerHTML = "⏸";
+    playPauseBtn.setAttribute("aria-label", "Pause");
+    video.classList.add("glow");
+    startWaveform();
+  });
+
+  video.addEventListener("pause", () => {
+    playPauseBtn.innerHTML = "▶";
+    playPauseBtn.setAttribute("aria-label", "Play");
+    video.classList.remove("glow");
+    stopWaveform();
+  });
+  
+  // --- 5. Initialization ---
+  function initialize() {
+    // Hide the default controls if custom JS loads successfully
+    video.controls = false; 
+    
+    // Set initial canvas size
+    resizeCanvas();
+    
+    // Listen for window resize to adjust canvas
+    window.addEventListener('resize', resizeCanvas);
+    
+    // Start with a faint, idle waveform
+    drawWaveform();
+    gsap.to(animationState, { opacity: 0.2, duration: 1 });
+  }
+
+  initialize();
+});
+</script>
+</body>
+</html>

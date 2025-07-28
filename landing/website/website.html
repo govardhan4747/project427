@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>A Personal Project</title>
+  <link rel="shortcut icon" href="../logo.png" type="image/x-icon">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&family=Michroma&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <main class="center-box">
+    <h1>WHY I MADE THIS....</h1>
+    
+    <p id="animated-text"
+       data-text="This project is very special to me — it's my first website after I began learning web development in November 2024. So yes, it may not be perfect or super fast, but it’s built with everything I have. And it's made for you. I built this entire website from scratch, completely on my own. Every small detail — every word, every animation, every page — reflects something deeply personal to me: our friendship, and how much I truly value it. I didn’t create this just because you’re talking to me now or to impress you. The idea was born way back in December 2024. At first, I thought of making some website for you — but later, I felt a birthday website would be more meaningful. Even if we hadn’t talked again… somehow, I had decided to send this website link to you anyway. This might just be a webpage on the internet — but to me, it's a memory, a first milestone for my skills, and a special webpage to me. I hope this makes you feel special. If it makes you feel even a little happy, if it brings a smile to your face… then I’ve succeeded.">
+      </p>
+  </main>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+  const p = document.getElementById('animated-text');
+  const textToType = p.getAttribute('data-text');
+  const finalLineHTML = '<br><span class="centered-span">Explore every page.......</span>';
+  
+  if (!p || !textToType) return;
+
+  p.style.visibility = 'visible'; // Make it visible now that JS is ready
+  let i = 0;
+  const speed = 20; // Typing speed in milliseconds
+
+  function typeWriter() {
+    if (i < textToType.length) {
+      // Use a text node to prevent constant HTML re-parsing
+      p.textContent = textToType.slice(0, i + 1);
+      i++;
+      setTimeout(typeWriter, speed);
+    } else {
+      // Typing is done, now add the final line
+      p.innerHTML = p.innerHTML + finalLineHTML;
+      // Optional: Remove cursor after typing is fully complete
+      p.classList.remove('typing');
+    }
+  }
+  
+  p.classList.add('typing'); // Add cursor effect
+  typeWriter();
+});
+  </script>
+</body>
+</html>

@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Place</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tone.js for Sound Effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Interactive dark gradient background */
+            background-color: #1a202c;
+            background-image: radial-gradient(circle at var(--x, 50%) var(--y, 50%), #2d3748, #1a202c 40%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1rem;
+            overflow: hidden; /* Important for animations */
+            position: relative; /* Needed for absolute positioning */
+            transition: background 0.2s linear;
+        }
+
+        /* Dark Glassmorphism container styling */
+        .auth-container {
+            background: rgba(30, 41, 59, 0.4); /* Dark slate with opacity */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px); /* For Safari */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border-radius: 1rem; /* 16px */
+            width: 90%;
+            max-width: 420px;
+            padding: 2.5rem; /* 40px */
+            position: relative; /* To ensure it's above the balloons */
+            z-index: 10;
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        }
+        
+        /* Grand Exit Animation */
+        .auth-container.exit {
+            transform: scale(0.7) translateY(20px);
+            opacity: 0;
+        }
+
+        /* Text colors for better contrast on the dark background */
+        .text-heading { color: #ffffff; }
+        .text-label { color: #cbd5e1; } /* Tailwind's slate-300 */
+        
+        /* Dark-themed Input styles */
+        input {
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            border-radius: 9999px; /* Pill shape */
+            transition: all 0.2s ease-in-out;
+        }
+        input::placeholder {
+            color: #ffffff; /* Solid white placeholder */
+        }
+        input:focus {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-color: #38bdf8; /* Tailwind's sky-400 */
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.4);
+            outline: none;
+        }
+
+        /* SVG icon color */
+        .input-icon svg { color: rgba(255, 255, 255, 0.5); }
+
+        /* Dark-themed Submit Button */
+        #submitButton {
+            background: linear-gradient(to right, #0891b2, #2563eb); /* Cyan to Blue */
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease-in-out;
+            transform: translateY(0);
+        }
+        #submitButton:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        #submitButton:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Dark-themed Message box styling */
+        #messageBox {
+            border-radius: 0.5rem;
+            font-weight: 500;
+        }
+        #messageBox.bg-green-100 {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #a7f3d0; /* Tailwind green-200 */
+            border: 1px solid rgba(74, 222, 128, 0.3);
+        }
+        #messageBox.bg-red-100 {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: #fecaca; /* Tailwind red-200 */
+            border: 1px solid rgba(248, 113, 113, 0.3);
+        }
+        
+        .hidden { display: none; }
+
+        /* Footer styling */
+        .footer {
+            position: absolute;
+            bottom: 1.5rem; /* 24px */
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.875rem; /* 14px */
+            z-index: 10;
+        }
+
+        /* Balloon Animation */
+        #balloon-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .balloon {
+            position: absolute;
+            width: 60px;
+            height: 80px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            bottom: -150px; /* Adjusted for longer thread */
+            opacity: 0.7;
+            animation: floatUp 12s infinite ease-in-out;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+        }
+        
+        .balloon.popped {
+            animation: none; /* Stop floating animation */
+            transform: scale(1.2);
+            opacity: 0;
+        }
+
+        .balloon::before {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 10px solid #fff;
+        }
+
+        /* This is the longer thread */
+        .balloon::after {
+            content: '';
+            position: absolute;
+            bottom: -80px; /* Position it further below the balloon */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 70px; /* Increased height for a longer thread */
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translateY(-60vh) translateX(30px);
+            }
+            100% {
+                transform: translateY(-120vh) translateX(-30px);
+                opacity: 0;
+            }
+        }
+
+        /* Confetti Animation */
+        #confetti-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 12px; 
+            height: 12px;
+            background-color: #f00; /* Fallback color */
+            opacity: 0;
+            animation: confetti-blast 3s ease-out forwards;
+            /* Star Shape */
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        }
+        
+        @keyframes confetti-blast {
+            0% {
+                opacity: 1;
+                transform: translate(var(--start-x), var(--start-y)) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--end-x), 100vh) rotate(1080deg);
+            }
+        }
+
+        /* Responsive adjustments for mobile devices */
+        @media (max-width: 480px) {
+            .auth-container {
+                padding: 1.5rem;
+            }
+            
+            #formTitle {
+                font-size: 1.5rem; /* equivalent to text-2xl */
+            }
+
+            .balloon {
+                width: 45px;
+                height: 60px;
+            }
+
+            .confetti {
+                width: 8px;
+                height: 8px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div id="balloon-container"></div>
+    <div id="confetti-container"></div>
+    
+    <div class="auth-container" id="authContainer">
+        <!-- Login Form Container -->
+        <div id="authFormContainer">
+            <h2 id="formTitle" class="text-3xl font-bold text-center text-heading mb-8">Welcome Back</h2>
+
+            <form id="authForm" class="space-y-6">
+                <!-- Name Input with SVG Icon -->
+                <div>
+                    <label for="name" class="block text-sm font-medium text-label mb-2 pl-4">Username</label>
+                    <div class="relative">
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="Enter your name"
+                            required
+                            class="w-full px-5 py-3 pr-10 shadow-sm sm:text-sm text-white"
+                        >
+                        <!-- User Icon SVG -->
+                        <div class="input-icon absolute inset-y-0 right-0 pr-5 flex items-center pointer-events-none">
+                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Password Input with SVG Icon -->
+                <div>
+                    <label for="password" class="block text-sm font-medium text-label mb-2 pl-4">Password</label>
+                    <div class="relative">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Password"
+                            required
+                            class="w-full px-5 py-3 pr-10 shadow-sm sm:text-sm text-white"
+                        >
+                        <!-- Lock Icon SVG -->
+                        <div class="input-icon absolute inset-y-0 right-0 pr-5 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v3h8z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-4">
+                    <button
+                        id="submitButton"
+                        type="submit"
+                        class="w-full flex justify-center py-3 px-4 rounded-full shadow-sm text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                    >
+                        Sign In
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Message Box for alerts -->
+        <div id="messageBox" class="hidden mt-4 p-3 text-center" role="alert"></div>
+    </div>
+
+    <footer class="footer">
+        &copy; <span id="current-year"></span> Created by Govardhan
+    </footer>
+
+    <script>
+        // --- DOM Elements ---
+        const authForm = document.getElementById('authForm');
+        const messageBox = document.getElementById('messageBox');
+        const nameInput = document.getElementById('name');
+        const passwordInput = document.getElementById('password');
+        const authContainer = document.getElementById('authContainer');
+
+        // --- Sound Effects Setup (Tone.js) ---
+        let soundsReady = false;
+        
+        // Balloon Pop Sound
+        const popSynth = new Tone.MembraneSynth({
+            pitchDecay: 0.05,
+            octaves: 10,
+            oscillator: { type: "sine" },
+            envelope: {
+                attack: 0.001,
+                decay: 0.4,
+                sustain: 0.01,
+                release: 1.4,
+                attackCurve: "exponential"
+            }
+        }).toDestination();
+
+        // Login Success Sound
+        const successSynth = new Tone.PolySynth(Tone.Synth, {
+            oscillator: { type: "fmsine" },
+            envelope: { attack: 0.01, decay: 0.2, sustain: 0.1, release: 0.5 }
+        }).toDestination();
+
+        // Confetti Sound
+        const confettiSynth = new Tone.NoiseSynth({
+            noise: { type: 'pink' },
+            envelope: { attack: 0.005, decay: 0.1, sustain: 0 }
+        }).toDestination();
+
+        // Function to start audio context
+        function startAudio() {
+            if (Tone.context.state !== 'running') {
+                Tone.start();
+            }
+            soundsReady = true;
+            document.body.removeEventListener('click', startAudio);
+            document.body.removeEventListener('keydown', startAudio);
+        }
+        document.body.addEventListener('click', startAudio);
+        document.body.addEventListener('keydown', startAudio);
+
+
+        // --- Functions ---
+
+        /**
+         * Displays a message in the message box.
+         * @param {string} message - The message to display.
+         * @param {string} type - The type of message ('success' or 'error').
+         */
+        function showMessage(message, type) {
+            messageBox.textContent = message;
+            messageBox.className = 'mt-4 p-3 text-center'; // Reset classes
+            if (type === 'success') {
+                messageBox.classList.add('bg-green-100');
+            } else if (type === 'error') {
+                messageBox.classList.add('bg-red-100');
+            }
+             // Make sure message box is visible
+            messageBox.classList.remove('hidden');
+            // Hide message after 3 seconds, unless it's a success message leading to a redirect
+            if (type !== 'success') {
+                setTimeout(() => {
+                    messageBox.classList.add('hidden');
+                }, 3000);
+            }
+        }
+
+        /**
+         * Handles the form submission for manual login.
+         * @param {Event} e - The form submission event.
+         */
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const name = nameInput.value;
+            const password = passwordInput.value;
+
+            // Manual check for credentials
+            if (name.toLowerCase() === 'saakshi' && password === 'saakshi_jain20') {
+                if (soundsReady) {
+                    successSynth.triggerAttackRelease(["C4", "E4", "G4"], "8n");
+                }
+                showMessage('Login successful! Redirecting...', 'success');
+                
+                // Trigger the "Grand Exit" animation
+                authContainer.classList.add('exit');
+                
+                // Redirect after the animation finishes
+                setTimeout(() => {
+                    window.location.href = 'birthday-cake.html'; 
+                }, 1000); // Match this to animation duration
+
+            } else {
+                // On failed login, show the specified error message.
+                showMessage("don't know password better leave", 'error');
+            }
+        }
+
+        /**
+         * Creates and animates the balloons.
+         */
+        function createBalloons() {
+            const balloonContainer = document.getElementById('balloon-container');
+            // Adjust balloon count for screen size
+            const balloonCount = window.innerWidth < 480 ? 4 : 7;
+            const colors = ['#ffffff']; // Only white balloons
+
+            for (let i = 0; i < balloonCount; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                
+                balloon.style.backgroundColor = colors[0];
+                balloon.style.left = `${Math.random() * 100}vw`;
+                balloon.style.animationDuration = `${Math.random() * 5 + 10}s`; // Duration between 10s and 15s
+                balloon.style.animationDelay = `${Math.random() * 5}s`;
+
+                // Add pop functionality
+                balloon.addEventListener('click', () => {
+                    if (soundsReady) {
+                        popSynth.triggerAttackRelease("C2", "8n");
+                    }
+                    balloon.classList.add('popped');
+                    // Remove from DOM after animation
+                    setTimeout(() => balloon.remove(), 300);
+                }, { once: true }); // Listener only fires once
+
+                balloonContainer.appendChild(balloon);
+            }
+        }
+
+        /**
+         * Creates a confetti blast effect.
+         */
+        function createConfettiBlast() {
+            if (soundsReady) {
+                confettiSynth.triggerAttackRelease("0.2");
+            }
+            const confettiContainer = document.getElementById('confetti-container');
+            // Adjust confetti count for screen size
+            const confettiCount = window.innerWidth < 480 ? 80 : 150;
+            const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#8b5cf6', '#ec4899', '#ffffff'];
+
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                const startX = Math.random() < 0.5 ? '-10vw' : '110vw';
+                const startY = `${Math.random() * 100}vh`;
+                const endX = `${Math.random() * 80 + 10}vw`;
+
+                confetti.style.setProperty('--start-x', startX);
+                confetti.style.setProperty('--start-y', startY);
+                confetti.style.setProperty('--end-x', endX);
+
+                confetti.style.animationDelay = `${Math.random() * 0.5}s`;
+
+                confettiContainer.appendChild(confetti);
+            }
+
+            // Remove confetti after animation to clean up the DOM
+            setTimeout(() => {
+                confettiContainer.innerHTML = '';
+            }, 3500);
+        }
+        
+        // --- Event Listeners ---
+        authForm.addEventListener('submit', handleLoginSubmit);
+        
+        // Interactive background listener
+        document.addEventListener('mousemove', (e) => {
+            document.body.style.setProperty('--x', `${e.clientX}px`);
+            document.body.style.setProperty('--y', `${e.clientY}px`);
+        });
+
+        // Password visibility toggle logic
+        let passwordTimeout;
+        passwordInput.addEventListener('input', () => {
+            clearTimeout(passwordTimeout);
+            passwordInput.type = 'text';
+            passwordTimeout = setTimeout(() => {
+                passwordInput.type = 'password';
+            }, 300);
+        });
+
+        // --- Initial Setup ---
+        window.onload = () => {
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            createBalloons();
+            createConfettiBlast();
+        };
+    </script>
+</body>
+</html>

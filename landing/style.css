@@ -1,0 +1,545 @@
+/*
+==================================================
+  IMPROVED AND REFACTORED STYLESHEET
+==================================================
+*/
+
+/* ==================================================
+  1. ROOT VARIABLES & THEME
+==================================================
+*/
+:root {
+  --font-primary: 'Orbitron', sans-serif;
+  --bg-gradient-1: #0a0a0a;
+  --bg-gradient-2: #000000;
+  --bg-gradient-3: #09095a;
+  --bg-gradient-4: #730b0a;
+  --bg-gradient-5: #222222;
+
+  --text-light: #F0F8FF;
+  --text-dark: #24292D;
+  --text-accent: #e73700;
+
+  --accent-glass: rgba(255, 255, 255, 0.1);
+  --accent-glass-border: rgba(255, 255, 255, 0.3);
+  --accent-blue: #09095a;
+  --accent-black: #000000;
+
+  --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.2);
+  --shadow-heavy: 0 8px 30px rgba(0, 0, 0, 0.3);
+  
+  --border-radius-s: 8px;
+  --border-radius-m: 16px;
+  --border-radius-l: 25px;
+  --border-radius-pill: 999px;
+}
+
+
+/* ==================================================
+  2. GLOBAL STYLES & RESET
+==================================================
+*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-primary);
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: linear-gradient(
+    132deg,
+    var(--bg-gradient-1),
+    var(--bg-gradient-2),
+    var(--bg-gradient-3),
+    var(--bg-gradient-2),
+    var(--bg-gradient-4),
+    var(--bg-gradient-5)
+  );
+  background-size: 400% 400%;
+  animation: BackgroundGradient 20s ease infinite;
+}
+
+/* Hide scrollbar for a cleaner look */
+body::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes BackgroundGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border: 0;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  outline: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--text-accent);
+}
+
+h2, h3 {
+  color: var(--text-light);
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 22px;
+  line-height: 30px;
+  margin-bottom: 48px;
+  padding-bottom: 16px;
+  position: relative;
+  text-transform: capitalize;
+}
+
+h3 {
+  font-size: 28px;
+  line-height: 32px;
+  margin: 0 0 10px;
+}
+
+/* ==================================================
+  3. NAVBAR (Glassmorphism)
+==================================================
+*/
+/* Main Navbar Container */
+.navbar {
+  width: 95%;
+  max-width: 1400px;
+  padding: 0 1.5rem;
+  height: 80px;
+  border-radius: 50px;
+  /* This lays out the title and timer */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+  /* Glassmorphism effect */
+  background: rgba(30, 30, 50, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  top: 15px;
+  z-index: 5; 
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.navbar h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #fff;
+  opacity: 0.8;
+}
+
+/* Countdown Timer inside Navbar */
+.countdown {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between time blocks */
+  font-family: 'Orbitron', sans-serif;
+  color: #fff;
+}
+
+.time-block {
+  display: flex;
+  flex-direction: column; /* Stacks the number and text vertically */
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  line-height: 1.1;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  padding: 4px;
+}
+
+.time-block .num {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.time-block .text {
+  font-size: 0.5rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+/* ==================================================
+  5. PHOTO GALLERY SECTION
+==================================================
+*/
+.photo-section {
+  position: relative;
+  width: 100%;
+  height: 550px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 120px; /* Extra margin to clear fixed navbar */
+  margin-bottom: 0px;
+  perspective: 1000px;
+  animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.main-photo, .side-photo {
+  width: 400px;
+  object-fit: cover;
+  border-radius: var(--border-radius-l);
+  transition: transform 0.4s ease, box-shadow 0.4s ease, filter 0.4s ease, opacity 0.4s ease;
+}
+
+.main-photo {
+  height: 500px;
+  z-index: 10;
+  box-shadow: var(--shadow-heavy);
+}
+
+.main-photo:hover {
+  transform: scale(1.05) rotateZ(1deg);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+}
+
+.side-photo {
+  position: absolute;
+  width: 380px;
+  height: 420px;
+  filter: blur(2px) brightness(0.7);
+  opacity: 0.8;
+  z-index: 1;
+}
+
+.side-photo.left {
+  left: 20%;
+  transform: rotateY(30deg) scale(0.9);
+}
+
+.side-photo.right {
+  right: 20%;
+  transform: rotateY(-30deg) scale(0.9);
+}
+
+/* The magic hover effect for side photos */
+.side-photo:hover {
+  height: 500px;
+  width: 400px;
+  transform: scale(1.05) rotateZ(0deg);
+  z-index: 11; /* Bring to front */
+  filter: none;
+  opacity: 1;
+  box-shadow: var(--shadow-heavy);
+}
+
+
+/* ==================================================
+  6. WISHES TEXT (Animated Gradient)
+==================================================
+*/
+/* Replace your existing .wishes rule in style.css with this */
+.wishes {
+  color: white;
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.2;
+  text-align: center;
+  padding: 3% 5%;
+  width: 100%;
+  margin-top: 0px;
+  margin-bottom: 0px;
+
+  /* Animated Gradient Text Effect */
+  background: linear-gradient(90deg, #ff8a00, #e52e71, #6a00ff, #ff8a00);
+  background-size: 200% 200%;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: wishesGradient 5s ease-in-out infinite;
+
+  /* --- ADD THESE TWO LINES FOR THE FADE-IN --- */
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+}
+
+/* Add this new rule for the visible state */
+.wishes.is-visible {
+  opacity: 1;
+}
+
+@keyframes wishesGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+/* ==================================================
+  7. CAROUSEL SECTION (Owl Carousel)
+==================================================
+*/
+.game-section {
+  padding: 60px 50px;
+}
+
+.game-section .item {
+  margin: 0 15px 60px;
+  width: 320px;
+  height: 400px;
+  display: flex;
+  align-items: flex-end;
+  background-position: center;
+  background-size: cover;
+  border-radius: var(--border-radius-m);
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  box-shadow: var(--shadow-light);
+  transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.game-section .item.active {
+  width: 500px;
+  box-shadow: var(--shadow-heavy);
+}
+
+/* Gradient overlay */
+.game-section .item::after {
+  content: "";
+  display: block;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 10%, transparent 50%);
+}
+
+.game-section .item-desc {
+  padding: 0 24px 20px;
+  color: var(--text-light);
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  width: 100%;
+  transform: translateY(calc(100% - 64px));
+  transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.game-section .item.active .item-desc {
+  transform: translateY(0);
+}
+
+.game-section .item-desc p {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease-out 0.2s, transform 0.3s ease-out 0.2s;
+}
+
+.game-section .item.active .item-desc p {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Call to Action Button */
+.game-section .item-desc a {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 25px;
+  border: 2px solid var(--text-light);
+  color: var(--text-light);
+  font-weight: bold;
+  border-radius: var(--border-radius-s);
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.game-section .item-desc a:hover {
+  background-color: var(--text-light);
+  color: var(--text-dark);
+  transform: scale(1.05);
+  box-shadow: 0 0 20px var(--text-light);
+}
+
+/* Title underline style */
+.line-title {
+  position: relative;
+  width: 400px;
+  margin-left: 50px; /* Align with carousel */
+}
+.line-title::before,
+.line-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  border-radius: 2px;
+}
+.line-title::before {
+  width: 100%;
+  background: #f2f2f233;
+}
+.line-title::after {
+  width: 70px;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-black));
+}
+
+/* ==================================================
+  8. RESPONSIVE MEDIA QUERIES
+==================================================
+*/
+
+/* --- Laptops & Desktops (1200px) --- */
+@media (max-width: 1200px) {
+  .side-photo.left { left: 10%; }
+  .side-photo.right { right: 10%; }
+}
+
+/* --- Tablets (992px) --- */
+@media (max-width: 992px) {
+  .photo-section {
+    height: auto;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 120px;
+  }
+  .main-photo, .side-photo {
+    position: relative;
+    left: 0;
+    right: 0;
+    transform: none !important; /* Reset transforms */
+  }
+  .side-photo {
+    width: 90%;
+    max-width: 400px;
+    height: auto;
+    filter: none; /* Make side photos visible */
+    opacity: 1;
+  }
+  .main-photo {
+    width: 90%;
+    max-width: 400px;
+    height: auto;
+  }
+  .side-photo:hover {
+    transform: scale(1.05) !important;
+  }
+}
+
+/* --- Mobile (max-width: 768px) --- */
+@media (max-width: 768px) {
+  .navbar {
+    height: 70px;
+    padding: 0 15px;
+  }
+  .clock-container {
+    height: 50px;
+    padding: 0 10px;
+  }
+  .time .time-text {
+    height: 35px;
+    width: 35px;
+    font-size: 14px;
+  }
+  .time .colon { font-size: 16px; }
+  .game-section { padding: 40px 15px; }
+  .line-title { width: 90%; margin-left: 5%; }
+
+  .game-section .item {
+    width: 260px;
+    height: 340px;
+  }
+  .game-section .item.active {
+    width: 320px;
+  }
+
+  /* --- SIDE PHOTO STYLES FOR MOBILE --- */
+  .photo-section {
+    height: auto;
+    flex-direction: column;
+    gap: 0px; /* Adjust gap as needed */
+    margin-top: 120px;
+  }
+  .main-photo, .side-photo {
+    position: relative; /* Allow them to stack */
+    left: 0;
+    right: 0;
+    transform: none !important;
+    width: 90%;
+    max-width: 200px;
+    height: auto;
+    margin: 0 auto; /* Center the photos */
+  }
+  .side-photo {
+    filter: blur(2px) brightness(0.7);
+    opacity: 0.8;
+    z-index: 1; /* Ensure they are behind the main photo initially */
+  }
+  .main-photo {
+    z-index: 10; /* Keep the main photo on top */
+  }
+  .side-photo.left {
+    /* No specific left positioning needed anymore */
+  }
+  .side-photo.right {
+    /* No specific right positioning needed anymore */
+  }
+  .side-photo:hover {
+    transform: scale(1.05) !important;
+    filter: none;
+    opacity: 1;
+    z-index: 11;
+  }
+}
+
+/* --- Small Mobile (500px) --- */
+@media (max-width: 500px) {
+  .wishes {
+    font-size: clamp(2rem, 12vw, 3rem);
+  }
+  .game-section .item {
+    width: 220px;
+    height: 300px;
+  }
+  .game-section .item.active {
+    width: 280px;
+  }
+  .game-section .item-desc {
+    transform: translateY(calc(100% - 54px));
+  }
+}

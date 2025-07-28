@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Message For You</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <style>
+    :root {
+        --dark-bg: #0d1a2f;
+        --glow-color: rgba(0, 191, 255, 0.7);
+        --text-color: #e0fbfc;
+        --border-color: rgba(255, 255, 255, 0.1);
+        --envelope-bg: #4A5568;
+        --envelope-flap-bg: #2D3748;
+    }
+
+    /* --- General Body & Background --- */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+        background: radial-gradient(ellipse at bottom, var(--dark-bg) 0%, #0a0a0a 100%);
+        color: white;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+    }
+
+    /* Hide scrollbar for a cleaner look */
+    body::-webkit-scrollbar {
+        display: none;
+    }
+    
+    /* --- Main Sections Layout --- */
+    section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 60px 20px;
+        position: relative;
+        overflow: hidden;
+        min-height: auto;
+    }
+
+    /* --- Section 1: Photos Section --- */
+    .photos-section {
+        padding-top: 80px;
+        padding-bottom: 40px;
+    }
+
+    .photos-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 60px;
+        flex-wrap: wrap;
+        max-width: 900px;
+        width: 90%;
+    }
+
+    .photo {
+        flex: 1;
+        max-width: 250px;
+        min-width: 200px;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+        border: 1px solid var(--border-color);
+        opacity: 0;
+        will-change: transform, opacity;
+        cursor: pointer;
+        position: relative; /* For caption positioning */
+    }
+
+    .photo:hover {
+        transform: scale(1.05) translateY(-5px);
+        box-shadow: 0 15px 40px var(--glow-color);
+    }
+
+    .photo img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        border-radius: inherit;
+        object-fit: cover;
+        transition: filter 0.4s ease;
+    }
+    .photo:hover img {
+        filter: brightness(0.6);
+    }
+    
+    .photo-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 15px;
+        background: rgba(0,0,0,0.5);
+        color: #fff;
+        font-family: 'Pacifico', cursive;
+        font-size: 1.2rem;
+        text-align: center;
+        opacity: 0;
+        transform: translateY(100%);
+        transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .photo:hover .photo-caption {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* --- Arrow Styling --- */
+    .arrow-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        will-change: transform, opacity;
+    }
+    
+    .arrow {
+        width: 80px;
+        height: 50px;
+        background: linear-gradient(90deg, transparent, #00bfff, #90e0ef, #e0fbfc, transparent);
+        background-size: 250% 100%;
+        clip-path: polygon(0 35%, 80% 35%, 80% 15%, 100% 50%, 80% 85%, 80% 65%, 0 65%);
+        animation: sweep 8s infinite linear;
+        filter: drop-shadow(0 0 8px var(--glow-color));
+    }
+
+    @keyframes sweep {
+        0% { background-position: 250% 0; }
+        100% { background-position: -150% 0; }
+    }
+
+    /* --- Envelope Section --- */
+    .envelope-section {
+        min-height: 80vh;
+        cursor: pointer;
+    }
+    .envelope-wrapper {
+        text-align: center;
+    }
+    .envelope {
+        width: 300px;
+        height: 200px;
+        position: relative;
+        perspective: 800px;
+        animation: envelopeGlow 3s infinite ease-in-out;
+    }
+    @keyframes envelopeGlow {
+        0% { 
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4)) drop-shadow(0 0 10px rgba(0, 191, 255, 0.5));
+        }
+        50% { 
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4)) drop-shadow(0 0 20px rgba(0, 191, 255, 0.8));
+        }
+        100% { 
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4)) drop-shadow(0 0 10px rgba(0, 191, 255, 0.5));
+        }
+    }
+    .envelope-body {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    .envelope-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: var(--envelope-bg);
+        z-index: 0;
+    }
+    .letter {
+        position: absolute;
+        bottom: -95%;
+        left: 5%;
+        width: 90%;
+        height: 95%;
+        background: #f0f8ff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.2) inset;
+        z-index: 1;
+    }
+    .envelope-flap {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: var(--envelope-flap-bg);
+        transform-origin: top;
+        clip-path: polygon(0 0, 100% 0, 50% 55%);
+        z-index: 2;
+    }
+
+    .envelope-section p {
+        color: white;
+        font-family: 'Pacifico', cursive;
+        margin-top: 20px;
+        font-size: 1.2rem;
+        opacity: 0.8;
+    }
+
+    /* --- Message Section --- */
+    .message-section {
+        display: none; /* Initially hidden */
+    }
+
+    /* --- Refined Glassmorphism --- */
+    .glass-message-box,
+    .quote-container {
+        position: relative;
+        background: rgba(15, 26, 47, 0.25);
+        border: 1px solid var(--border-color);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border-radius: 20px;
+        z-index: 1;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+        will-change: transform, box-shadow;
+    }
+
+    .glass-message-box:hover,
+    .quote-container:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 18px 55px rgba(0, 191, 255, 0.2);
+    }
+
+    /* -- Glass Box Specifics -- */
+    .glass-message-box {
+        padding: 60px 50px;
+        max-width: 1000px;
+        width: 90%;
+        text-align: center;
+    }
+
+    .glass-message-box p {
+        font-family: 'Pacifico', cursive;
+        color: var(--text-color);
+        font-size: 1.8rem;
+        letter-spacing: 1.5px;
+        line-height: 1.8;
+        opacity: 0;
+        transform: translateY(25px);
+        text-shadow: 0 0 8px rgba(144, 224, 239, 0.3);
+        will-change: transform, opacity;
+    }
+
+    /* --- Quote Section --- */
+    .quote-container {
+        display: flex;
+        max-width: 1000px;
+        width: 90%;
+        overflow: hidden;
+        opacity: 0;
+        will-change: transform, opacity;
+    }
+
+    .quote-image {
+        flex: 1;
+        max-width: 350px;
+        min-width: 250px;
+        overflow: hidden;
+    }
+
+    .quote-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.9);
+    }
+
+    .quote-text {
+        flex: 2;
+        padding: 50px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .quote-text blockquote {
+        font-family: 'Cinzel', serif;
+        font-size: 2.2rem;
+        margin-bottom: 25px;
+        line-height: 1.6;
+        background: linear-gradient(45deg, #00bfff, #90e0ef, #e0fbfc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0 0 15px var(--glow-color);
+    }
+
+    .quote-text p {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #c0c0c0;
+    }
+
+    /* --- Background Effects --- */
+    .particles-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+    }
+    
+    .floating-sparkles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 999;
+    }
+
+    .sparkle {
+        position: absolute;
+        background: white;
+        opacity: 0;
+        border-radius: 50%;
+        box-shadow: 0 0 8px #fff, 0 0 15px var(--glow-color), 0 0 25px var(--glow-color);
+        animation: floatUp 8s ease-in-out infinite;
+    }
+
+    @keyframes floatUp {
+        0% { transform: translateY(10vh) scale(0.5); opacity: 0; }
+        10%, 90% { opacity: 1; }
+        100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
+    }
+    
+    /* --- Lightbox --- */
+    .lightbox {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.85);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10001;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.4s ease;
+    }
+    .lightbox.active {
+        opacity: 1;
+        pointer-events: all;
+    }
+    .lightbox img {
+        max-width: 90%;
+        max-height: 80%;
+        border-radius: 10px;
+        box-shadow: 0 0 50px var(--glow-color);
+    }
+    .lightbox-close {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        font-size: 3rem;
+        color: white;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+    .lightbox-close:hover {
+        transform: scale(1.2);
+    }
+
+    /* --- Animated Timeline --- */
+    .timeline-svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        display: none; /* Hide initially */
+    }
+    .timeline-path {
+        stroke: rgba(255, 255, 255, 0.2);
+        stroke-width: 2;
+        fill: none;
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;
+    }
+
+    /* --- Mobile Responsive --- */
+    @media (max-width: 768px) {
+        section { padding: 40px 15px; }
+        .photos-section { padding-top: 60px; }
+        .photos-container {
+            flex-direction: row; /* Changed from column */
+            gap: 15px; /* Reduced gap */
+            flex-wrap: nowrap; /* Prevent wrapping */
+        }
+        .arrow {
+            width: 50px; /* Reduced arrow size */
+            height: 30px;
+        }
+        .photo {
+            max-width: 120px; /* Reduced photo size */
+            min-width: 100px;
+        }
+        .glass-message-box { padding: 40px 25px; }
+        .glass-message-box p { font-size: 1.5rem; }
+        .quote-container { flex-direction: column; }
+        .quote-image { max-width: 100%; height: 250px; }
+        .quote-text { padding: 30px 25px; }
+        .quote-text blockquote { font-size: 1.8rem; }
+    }
+    
+    /* Smaller mobile breakpoint */
+    @media (max-width: 480px) {
+        .glass-message-box { padding: 30px 20px; }
+        .glass-message-box p { font-size: 1.3rem; }
+        .quote-text blockquote { font-size: 1.6rem; }
+        .quote-text { padding: 25px; }
+    }
+    body{
+        background-color: #0a0a0a;
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="particles-bg"></div>
+  <div class="floating-sparkles"></div>
+  <svg class="timeline-svg">
+      <path class="timeline-path" d=""></path>
+  </svg>
+
+  <div class="lightbox">
+      <span class="lightbox-close">&times;</span>
+      <img src="" alt="Lightbox image">
+  </div>
+  
+  <section class="photos-section">
+    <div class="photos-container">
+        <div class="photo" id="photo1">
+            <img src="child-saakshi.jpg" alt="Childhood Photo" onerror="this.onerror=null;this.src='https://placehold.co/400x500/333/fff?text=Image+Not+Found';">
+            <div class="photo-caption">Where the story began...</div>
+        </div>
+        <div class="arrow-container">
+            <div class="arrow"></div>
+        </div>
+        <div class="photo" id="photo2">
+            <img src="present-saakshi.jpg" alt="Present Day Photo" onerror="this.onerror=null;this.src='https://placehold.co/400x500/555/fff?text=Image+Not+Found';">
+            <div class="photo-caption">And where it is now...</div>
+        </div>
+    </div>
+  </section>
+
+  <section class="envelope-section">
+      <div class="envelope-wrapper">
+          <div class="envelope">
+              <div class="envelope-body">
+                  <div class="letter"></div>
+                  <div class="envelope-back"></div>
+              </div>
+              <div class="envelope-flap"></div>
+          </div>
+          <p>Click to open</p>
+      </div>
+  </section>
+
+  <section class="message-section">
+    <div class="glass-message-box">
+      <p class="msg-line">Hey Saakshi,</p>
+      <p class="msg-line">This isn't just another message.</p>
+      <p class="msg-line">It's something I've wanted to tell you for a long time.</p>
+      <p class="msg-line">Your presence has been like light — steady, warm, real.</p>
+      <p class="msg-line">Sometimes, I don't know how to express it all...</p>
+      <p class="msg-line">So I wrote it here.</p>
+      <p class="msg-line">For you. Only you.</p>
+    </div>
+  </section>
+
+  <section class="quote-section">
+    <div class="quote-container">
+      <div class="quote-image">
+        <img src="quote.jpg" alt="Inspirational Photo" onerror="this.onerror=null;this.src='https://placehold.co/400x600/444/fff?text=Image+Not+Found';"/>
+      </div>
+      <div class="quote-text">
+        <blockquote>“You don't find the light. You become it.”</blockquote>
+        <p>This quote reminds me of you. You’ve always carried light within — even when things were uncertain, you glowed through. That’s what inspires me most about you.</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- Feature: Photo Lightbox ---
+        const lightbox = document.querySelector('.lightbox');
+        const lightboxImg = lightbox.querySelector('img');
+        const lightboxClose = lightbox.querySelector('.lightbox-close');
+        document.querySelectorAll('.photo').forEach(photo => {
+            photo.addEventListener('click', (e) => {
+                if (e.target.classList.contains('photo-caption')) return;
+                const imgSrc = photo.querySelector('img').src;
+                lightboxImg.src = imgSrc;
+                lightbox.classList.add('active');
+            });
+        });
+        lightboxClose.addEventListener('click', () => lightbox.classList.remove('active'));
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) lightbox.classList.remove('active');
+        });
+
+        // --- Feature: Envelope Opening ---
+        const envelopeSection = document.querySelector('.envelope-section');
+        const envelopeWrapper = document.querySelector('.envelope-wrapper');
+        let isEnvelopeOpening = false;
+
+        envelopeSection.addEventListener('click', () => {
+            if (isEnvelopeOpening) return;
+            isEnvelopeOpening = true;
+
+            const openTimeline = gsap.timeline();
+            openTimeline
+                .to('.envelope-flap', {
+                    duration: 0.7,
+                    rotationX: 180,
+                    ease: 'power2.inOut'
+                }, 0)
+                .to('.letter', {
+                    duration: 0.7,
+                    bottom: '5%',
+                    ease: 'power2.inOut'
+                }, '-=0.5')
+                .to(envelopeWrapper, {
+                    duration: 0.5,
+                    opacity: 0,
+                    onComplete: () => {
+                        envelopeSection.style.display = 'none';
+                        document.querySelector('.message-section').style.display = 'flex';
+                        document.querySelector('.timeline-svg').style.display = 'block';
+                        gsap.from('.message-section', { opacity: 0, duration: 1 });
+                        
+                        drawTimeline(); 
+                        ScrollTrigger.refresh();
+                    }
+                });
+        });
+
+        // --- Initial & Scroll Animations ---
+        const photosTl = gsap.timeline();
+        photosTl.to('#photo1', { x: 0, opacity: 1, duration: 1, ease: 'power3.out' }, 0.2)
+                .from('#photo1', { x: -100 }, 0.2)
+                .to('.arrow-container', { scale: 1, opacity: 1, duration: 1.2, ease: 'elastic.out(1, 0.5)' }, 0.6)
+                .from('.arrow-container', { scale: 0.5 }, 0.6)
+                .to('#photo2', { x: 0, opacity: 1, duration: 1, ease: 'power3.out' }, 0.4)
+                .from('#photo2', { x: 100 }, 0.4);
+
+        gsap.to(gsap.utils.toArray('.msg-line'), {
+            opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.2,
+            scrollTrigger: { trigger: '.glass-message-box', start: 'top 70%', toggleActions: 'play none none reverse' }
+        });
+
+        gsap.fromTo('.quote-container',
+            { y: 50, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 1.2,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.quote-section',
+                    start: 'top 70%',
+                    toggleActions: 'play none none reverse'
+                }
+            }
+        );
+
+        // --- Feature: Animated Timeline ---
+        const timelinePath = document.querySelector('.timeline-path');
+        let timelineAnimation;
+
+        function drawTimeline() {
+            const messageSection = document.querySelector('.message-section');
+            const quoteSection = document.querySelector('.quote-section');
+            
+            if (!messageSection || messageSection.style.display === 'none' || !quoteSection) return;
+
+            const startY = messageSection.offsetTop - messageSection.offsetHeight / 2;
+            const endY = quoteSection.offsetTop + quoteSection.offsetHeight / 2;
+            const pathData = `M ${window.innerWidth / 2} ${startY} L ${window.innerWidth / 2} ${endY}`;
+            timelinePath.setAttribute('d', pathData);
+            const length = timelinePath.getTotalLength();
+            timelinePath.style.strokeDasharray = length;
+            timelinePath.style.strokeDashoffset = length;
+            
+            if (timelineAnimation) {
+                timelineAnimation.kill();
+            }
+
+            timelineAnimation = gsap.to(timelinePath, {
+                strokeDashoffset: 0,
+                scrollTrigger: {
+                    trigger: ".message-section",
+                    start: "bottom center",
+                    end: "bottom top",
+                    scrub: true,
+                }
+            });
+        }
+        
+        window.addEventListener('resize', drawTimeline);
+
+        // --- Background Effects (Optimized for Mobile) ---
+        const isMobile = window.innerWidth < 768;
+
+        function createParticles() {
+            const container = document.querySelector('.particles-bg');
+            if (!container) return;
+            const count = isMobile ? 15 : 30; // Fewer particles on mobile
+            for (let i = 0; i < count; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('particle');
+                dot.style.top = `${Math.random() * 100}%`;
+                dot.style.left = `${Math.random() * 100}%`;
+                container.appendChild(dot);
+                gsap.to(dot, {
+                    duration: 10 + Math.random() * 10,
+                    y: (Math.random() > 0.5 ? '-' : '+') + '150vh',
+                    x: (Math.random() > 0.5 ? '-' : '+') + '150vw',
+                    ease: 'power1.inOut',
+                    repeat: -1,
+                    delay: Math.random() * 5,
+                    yoyo: true,
+                    repeatDelay: Math.random() * 2
+                });
+            }
+        }
+        createParticles();
+
+        function createSparkle() {
+            const container = document.querySelector(".floating-sparkles");
+            if (!container) return;
+            const sparkle = document.createElement("div");
+            sparkle.classList.add("sparkle");
+            const size = Math.random() * 2 + 1;
+            sparkle.style.width = `${size}px`;
+            sparkle.style.height = `${size}px`;
+            sparkle.style.left = Math.random() * 100 + "vw";
+            sparkle.style.animationDuration = (5 + Math.random() * 5) + "s";
+            sparkle.style.animationDelay = Math.random() * 6 + "s";
+            container.appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), 10000);
+        }
+        const sparkleInterval = isMobile ? 600 : 400; // Slower sparkle creation on mobile
+        setInterval(createSparkle, sparkleInterval);
+
+    });
+  </script>
+</body>
+</html>
