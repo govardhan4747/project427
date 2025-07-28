@@ -419,127 +419,180 @@ h3 {
   background: linear-gradient(90deg, var(--accent-blue), var(--accent-black));
 }
 
+.photo-gallery {
+  /* This is the most important rule! */
+  position: relative;
+
+  /* Use Flexbox to easily center the main photo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* Give it some space so the photos don't touch the screen edge */
+  padding-block: 40px;
+}
+
+@media (max-width: 768px) {
+  /* Main photo gets smaller */
+  .main-photo {
+    width: 200px;
+    height: 280px;
+  }
+
+  /* Side photos get much smaller and tuck in */
+  .side-photo {
+    width: 160px;
+    height: 200px;
+    filter: blur(1px) brightness(0.6);
+    transform: rotateY(30deg) scale(0.7);
+  }
+
+  .side-photo.right {
+    transform: rotateY(-30deg) scale(0.7);
+  }
+
+  /* Position them to overlap the main photo significantly */
+  .side-photo.left {
+    left: -10%;
+  }
+
+  .side-photo.right {
+    right: -10%;
+  }
+
+  /* Ensure the hovered side photo grows to match the main photo's size */
+  .side-photo:hover {
+    height: 280px;
+    width: 200px;
+    transform: scale(1.05) rotateZ(0deg);
+  }
+
+  /* A more subtle hover effect for the main photo on mobile */
+  .main-photo:hover {
+    transform: scale(1.03) rotateZ(1deg);
+  }
+}
+
 /* ==================================================
-  8. RESPONSIVE MEDIA QUERIES
+  8. RESPONSIVE MEDIA QUERIES (CORRECTED)
 ==================================================
 */
 
 /* --- Laptops & Desktops (1200px) --- */
 @media (max-width: 1200px) {
-  .side-photo.left { left: 10%; }
-  .side-photo.right { right: 10%; }
+.side-photo.left { left: 10%; }
+.side-photo.right { right: 10%; }
 }
 
 /* --- Tablets (992px) --- */
 @media (max-width: 992px) {
-  .photo-section {
-    height: auto;
-    flex-direction: column;
-    gap: 30px;
-    margin-top: 120px;
-  }
-  .main-photo, .side-photo {
-    position: relative;
-    left: 0;
-    right: 0;
-    transform: none !important; /* Reset transforms */
-  }
-  .side-photo {
-    width: 90%;
-    max-width: 400px;
-    height: auto;
-    filter: none; /* Make side photos visible */
-    opacity: 1;
-  }
-  .main-photo {
-    width: 90%;
-    max-width: 400px;
-    height: auto;
-  }
-  .side-photo:hover {
-    transform: scale(1.05) !important;
-  }
+/* Photo gallery shrinks but keeps 3D layout */
+.photo-section {
+ perspective: 800px; /* Adjust perspective for smaller screens */
+}
+ .main-photo {
+ width: 300px;
+ height: 400px;
+ }
+ .side-photo {
+ width: 280px;
+ height: 320px;
+ }
+ .side-photo.left {
+ left: -1%;
+ transform: rotateY(30deg) scale(0.8);
+ }
+ .side-photo.right {
+ right: -2%;
+ transform: rotateY(-30deg) scale(0.8);
+ }
+ .side-photo:hover {
+  width: 300px;
+height: 400px;
+ transform: scale(1.05) rotateZ(0deg);
+ }
 }
 
-/* --- Mobile (max-width: 768px) --- */
+/* --- Mobile (768px) --- */
 @media (max-width: 768px) {
-  .navbar {
-    height: 70px;
-    padding: 0 15px;
-  }
-  .clock-container {
-    height: 50px;
-    padding: 0 10px;
-  }
-  .time .time-text {
-    height: 35px;
-    width: 35px;
-    font-size: 14px;
-  }
-  .time .colon { font-size: 16px; }
-  .game-section { padding: 40px 15px; }
-  .line-title { width: 90%; margin-left: 5%; }
-
-  .game-section .item {
-    width: 260px;
-    height: 340px;
-  }
-  .game-section .item.active {
-    width: 320px;
-  }
-
-  /* --- SIDE PHOTO STYLES FOR MOBILE --- */
-  .photo-section {
-    height: auto;
-    flex-direction: column;
-    gap: 0px; /* Adjust gap as needed */
-    margin-top: 120px;
-  }
-  .main-photo, .side-photo {
-    position: relative; /* Allow them to stack */
-    left: 0;
-    right: 0;
-    transform: none !important;
-    width: 90%;
-    max-width: 200px;
-    height: auto;
-    margin: 0 auto; /* Center the photos */
-  }
-  .side-photo {
-    filter: blur(2px) brightness(0.7);
-    opacity: 0.8;
-    z-index: 1; /* Ensure they are behind the main photo initially */
-  }
-  .main-photo {
-    z-index: 10; /* Keep the main photo on top */
-  }
-  .side-photo.left {
-    /* No specific left positioning needed anymore */
-  }
-  .side-photo.right {
-    /* No specific right positioning needed anymore */
-  }
-  .side-photo:hover {
-    transform: scale(1.05) !important;
-    filter: none;
-    opacity: 1;
-    z-index: 11;
-  }
+  /* --- Navbar & General --- */
+ .navbar {
+ height: 70px;
+ padding: 0 15px;
+}
+ .time-block {
+ width: 45px;
+ height: 45px;
+ }
+ .time-block .num { font-size: 1.1rem; }
+ .time-block .text { font-size: 0.45rem; }
+ 
+  /* --- Photo Gallery (Super-shrunk 3D layout) --- */
+ .photo-section {
+ margin-top: 100px; /* Adjust for navbar */
+    height: 400px; /* Give it a fixed height to contain elements */
+ }
+ .main-photo {
+ width: 180px;
+ height: 250px;
+ }
+ .side-photo {
+ width: 150px;
+ height: 190px;
+ filter: blur(1px) brightness(0.6);
+ }
+ .side-photo.left {
+ left: -1%;
+ transform: rotateY(35deg) scale(0.75);
+ }
+ .side-photo.right {
+ right: -1%;
+ transform: rotateY(-35deg) scale(0.75);
+ }
+ .side-photo:hover {
+ width: 180px;
+ height: 250px;
+ transform: scale(1.05) rotateZ(0deg);
+ }
+ .main-photo:hover {
+ transform: scale(1.03) rotateZ(1deg);
+ }
+ 
+  /* --- Game Section (Untouched as requested) --- */
+ .game-section { padding: 40px 15px; }
+ .line-title { width: 90%; margin-left: 5%; }
+ .game-section .item {
+ width: 260px;
+ height: 340px;
+ }
+ .game-section .item.active {
+ width: 320px;
+ }
 }
 
 /* --- Small Mobile (500px) --- */
 @media (max-width: 500px) {
-  .wishes {
-    font-size: clamp(2rem, 12vw, 3rem);
+ .wishes {
+ font-size: clamp(2rem, 12vw, 3rem);
+ }
+  .navbar h1 {
+    display: none; /* Hide title to make space for timer */
   }
-  .game-section .item {
-    width: 220px;
-    height: 300px;
+  .navbar {
+    justify-content: center; /* Center the timer */
   }
-  .game-section .item.active {
-    width: 280px;
-  }
-  .game-section .item-desc {
-    transform: translateY(calc(100% - 54px));
-  }
+
+  /* --- Game Section (Untouched as requested) --- */
+ .game-section .item {
+ width: 220px;
+ height: 300px;
+ }
+ .game-section .item.active {
+ width: 280px;
+ }
+ .game-section .item-desc {
+ transform: translateY(calc(100% - 54px)); }
 }
+body{
+        background-color: #0a0a0a;
+    }
