@@ -65,5 +65,34 @@ $(document).ready(function () {
     $(this).toggleClass("active");
   });
 });
+ const mainButton = document.querySelector('.frog-button');
+        const modal = document.getElementById('confirmation-modal');
+        const yesButton = document.getElementById('confirm-yes');
+        const noButton = document.getElementById('confirm-no');
 
+        // The destination link (change this to your desired URL)
+        const destinationUrl = 'frog/frog.html';
 
+        // Event listener for the main frog button
+        mainButton.addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent the anchor tag from navigating immediately
+            modal.style.display = 'flex'; // Show the modal
+        });
+
+        // Event listener for the "No" button in the modal
+        noButton.addEventListener('click', () => {
+            modal.style.display = 'none'; // Hide the modal
+        });
+
+        // Event listener for the "Yes" button in the modal
+        yesButton.addEventListener('click', () => {
+            // Redirect to the specified URL
+            window.location.href = destinationUrl;
+        });
+
+        // Optional: Also close the modal if the user clicks on the dark overlay background
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
