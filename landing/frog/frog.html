@@ -416,6 +416,34 @@
                 }, 250);
             });
         });
+        // --- Inactivity Timeout Logic ---
+let inactivityTimer;
+
+function resetInactivityTimer() {
+ // Clear the previous timer
+ clearTimeout(inactivityTimer);
+
+ // Set a new timer for 10 minutes (600,000 milliseconds)
+ inactivityTimer = setTimeout(() => {
+ // After 10 minutes, redirect back to the login page
+ window.location.href = '../../index.html'; // <-- CHANGE THIS
+ }, 300000);
+}
+
+// --- Event Listeners to Reset the Timer ---
+// Any of these actions will reset the 10-minute timer.
+window.addEventListener('mousemove', resetInactivityTimer);
+window.addEventListener('mousedown', resetInactivityTimer);
+window.addEventListener('touchstart', resetInactivityTimer);
+window.addEventListener('keydown', resetInactivityTimer);
+window.addEventListener('scroll', resetInactivityTimer, true);
+
+// --- Initial Start ---
+// Start the timer as soon as the page loads.
+window.onload = function() {
+resetInactivityTimer();
+ // You can also add any other onload functions for your cake page here.
+};
     </script>
 
 </body>

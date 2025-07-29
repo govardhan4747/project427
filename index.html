@@ -493,6 +493,20 @@
             }, 3500);
         }
         
+        // --- Inactivity Timeout Logic ---
+        let inactivityTimer;
+
+        function resetInactivityTimer() {
+            // Clear the previous timer
+            clearTimeout(inactivityTimer);
+            
+            // Set a new timer for 5 minutes (300,000 milliseconds)
+            inactivityTimer = setTimeout(() => {
+                // Reload the page after 5 minutes of inactivity
+                window.location.reload();
+            }, 300000); 
+        }
+
         // --- Event Listeners ---
         authForm.addEventListener('submit', handleLoginSubmit);
         
@@ -511,12 +525,22 @@
                 passwordInput.type = 'password';
             }, 300);
         });
+        
+        // Event listeners to reset the inactivity timer
+        window.addEventListener('mousemove', resetInactivityTimer);
+        window.addEventListener('mousedown', resetInactivityTimer);
+        window.addEventListener('touchstart', resetInactivityTimer);
+        window.addEventListener('keydown', resetInactivityTimer);
+        window.addEventListener('scroll', resetInactivityTimer, true);
+
 
         // --- Initial Setup ---
         window.onload = () => {
             document.getElementById('current-year').textContent = new Date().getFullYear();
             createBalloons();
             createConfettiBlast();
+            // Start the inactivity timer when the page loads
+            resetInactivityTimer();
         };
     </script>
 </body>
