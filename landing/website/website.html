@@ -1,65 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>WHY..?</title>
-  <link rel="shortcut icon" href="../logo.png" type="image/x-icon">
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&family=Michroma&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WHY..?</title>
+    <link rel="shortcut icon" href="../logo.png" type="image/x-icon">
+    <!-- Google Fonts (including Michroma for the header) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;700&family=Michroma&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==================================================
+         IMPROVED & BEAUTIFIED STYLESHEET (FINAL VERSION)
+        ================================================== */
+
+        :root {
+         /* Colors */
+         --bg-color-dark: #111;
+         --text-color: #ddd;
+         --header-color: #ffffff;
+         
+         /* Fonts */
+         --font-body: 'Exo 2', sans-serif;
+         --font-header: 'Michroma', sans-serif;
+         
+         /* Glow Colors */
+         --glow-cyan: rgba(0, 255, 195, 0.7);
+         --glow-blue: rgba(0, 180, 255, 0.7);
+         --glow-magenta: rgba(255, 0, 255, 0.7);
+         --glow-red: rgba(255, 100, 100, 0.7);
+        }
+
+        * {
+         margin: 0;
+         padding: 0;
+         box-sizing: border-box;
+        }
+
+        body {
+         /* --- Combined Body Styles --- */
+         background-color: var(--bg-color-dark);
+         color: var(--text-color);
+         font-family: var(--font-body);
+         display: grid;
+         place-items: center;
+         min-height: 100vh;
+         padding: 1rem;
+         position: relative; /* Needed for the blobs */
+         overflow: hidden;   /* Prevents scrollbars from blobs */
+        }
+
+        .center-box {
+         /* --- Glassmorphism Container --- */
+         background: rgba(34, 34, 34, 0.6); /* Semi-transparent background */
+         padding: 30px 40px;
+         border-radius: 15px; /* Slightly larger radius */
+         max-width: 800px;
+         width: 100%;
+         /* Changed from justify to left for better mobile readability */
+         text-align: left; 
+         
+         border: 1px solid rgba(255, 255, 255, 0.1);
+         backdrop-filter: blur(12px);
+         -webkit-backdrop-filter: blur(12px);
+         
+         /* --- Animated Glow --- */
+         animation: pulsing-glow 4s infinite linear;
+         z-index: 10; /* Ensure box is above blobs */
+        }
+
+        h1 {
+         font-family: var(--font-header);
+         color: var(--header-color);
+         font-size: clamp(1.5rem, 5vw, 2.2rem);
+         text-align: center;
+         margin-bottom: 2rem;
+         letter-spacing: 1.5px;
+        }
+
+        #animated-text {
+         font-size: clamp(1rem, 2.5vw, 1.1rem);
+         line-height: 1.7;
+         visibility: hidden; /* Hide initially to prevent flash */
+         display: block;
+         text-align: justify;
+         white-space: pre-wrap; /* Respect line breaks in the text */
+         word-break: break-word; /* Prevent overflow on mobile */
+        }
+
+        #animated-text.typing::after {
+         content: '|';
+         animation: blink 1s step-end infinite;
+         color: var(--header-color);
+         margin-left: 2px;
+         opacity: 0.7;
+        }
+
+        .centered-span {
+         display: block;
+         text-align: center;
+         margin-top: 2rem;
+         font-weight: 700;
+         color: var(--header-color);
+        }
+
+        /* ==================================================
+         MODERN ANIMATED BLOB BACKGROUND
+        ================================================== */
+        .blob {
+         position: absolute;
+         width: 400px;
+         height: 400px;
+         background-image: linear-gradient(180deg, var(--glow-blue), var(--glow-magenta));
+         border-radius: 50%;
+         filter: blur(120px);
+         opacity: 0.4;
+         z-index: -1;
+         transition: all 0.5s ease; /* For smooth resizing */
+        }
+
+        .blob-1 {
+         top: -100px;
+         left: -150px;
+         animation: move-1 15s infinite alternate;
+        }
+
+        .blob-2 {
+         bottom: -150px;
+         right: -100px;
+         background-image: linear-gradient(180deg, var(--glow-red), var(--glow-cyan));
+         animation: move-2 18s infinite alternate;
+        }
+
+        /* ==================================================
+         KEYFRAME ANIMATIONS
+        ================================================== */
+        @keyframes pulsing-glow {
+         0%, 100% {
+           border-color: var(--glow-cyan);
+           box-shadow: 0 0 25px var(--glow-cyan);
+         }
+         25% {
+           border-color: var(--glow-blue);
+           box-shadow: 0 0 25px var(--glow-blue);
+         }
+         50% {
+           border-color: var(--glow-magenta);
+           box-shadow: 0 0 25px var(--glow-magenta);
+         }
+         75% {
+           border-color: var(--glow-red);
+           box-shadow: 0 0 25px var(--glow-red);
+         }
+        }
+
+        @keyframes blink {
+         from, to { color: transparent; }
+         50% { color: var(--header-color); }
+        }
+
+        @keyframes move-1 {
+         from { transform: translate(0, 0) scale(1); }
+         to { transform: translate(200px, 100px) scale(1.2); }
+        }
+
+        @keyframes move-2 {
+         from { transform: translate(0, 0) scale(1.1); }
+         to { transform: translate(-150px, -100px) scale(1); }
+        }
+
+        /* ==================================================
+         RESPONSIVE STYLES FOR MOBILE
+        ================================================== */
+        @media (max-width: 768px) {
+         body {
+           padding: 0.5rem; /* Reduce padding on small screens */
+         }
+         
+         .center-box {
+           padding: 20px; /* Reduce padding inside the box */
+         }
+
+         h1 {
+           font-size: 1.5rem; /* Make header smaller */
+         }
+
+         #animated-text {
+           font-size: 0.9rem; /* Make body text smaller */
+           text-align: left; /* Ensure text is left-aligned on mobile */
+         }
+
+         /* Make blobs smaller and less blurry on mobile */
+         .blob {
+           width: 250px;
+           height: 250px;
+           filter: blur(80px);
+         }
+        }
+    </style>
 </head>
 <body>
-  <div class="blob blob-1"></div>
-  <div class="blob blob-2"></div>
-  <main class="center-box">
-    <h1>WHY I MADE THIS....</h1>
+    <!-- Background Blobs -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <!-- Main Content Box -->
+    <main class="center-box">
+        <h1 class="tracking-wider">
+            WHY I MADE THIS....
+        </h1>
+        
+        <!-- The paragraph where the text will be typed -->
+        <p id="animated-text">
+        </p>
+    </main>
     
-    <p id="animated-text"
-       data-text="This project means a lot to me — it’s actually the very first full website I built since I started learning web development in November 2024. So no, it might not be perfect or the fastest thing ever — but it’s built with everything I’ve got. And it’s made just for you.
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const p = document.getElementById('animated-text');
+            
+            // The text to be typed. Using backticks for multi-line string.
+            const textToType = `This project means a lot to me — it’s actually the very first full website I built since I started learning web development in November 2023. So no, it might not be perfect or the fastest thing ever — but it’s built with everything I’ve got. And it’s made just for you.
 
 I made the entire thing from scratch, completely on my own. Every word, every animation, every color, every little page — it all holds a bit of what I feel.
 
-This wasn’t something I started just because we began talking again, or to impress you. The idea came to me way back in December 2024. At first, I thought of creating something simple… but then I felt — a birthday website would be more meaningful. Even if we hadn’t reconnected, I still would’ve built it just the way it is now… and somehow, I would’ve sent it to you.
+This wasn’t something I started just because we began talking again, or to impress you. The idea came to me way back in December 2023. At first, I thought of creating something simple… but then I felt — a birthday website would be more meaningful. Even if we hadn’t reconnected, I still would’ve built it just the way it is now… and somehow, I would’ve sent it to you.
 
-Yeah, maybe it’s just a webpage. But for me. It’s a memory — something I truly wanted to build. A small gift from my side, to you.Hope this becomes one of the memories for you.
+Yeah, maybe it’s just a webpage. But for me, it’s a memory — something I truly wanted to build. A small gift from my side, to you. Hope this becomes one of the memories for you.
 
-If it makes you smile, even for a second... then that’s more than enough for me :)
-">
-      </p>
-  </main>
-  
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-  const p = document.getElementById('animated-text');
-  const textToType = p.getAttribute('data-text');
-  const finalLineHTML = '<br><span class="centered-span">Explore,Every page holds something....</span>';
-  
-  if (!p || !textToType) return;
+If it makes you smile, even for a second... then that’s more than enough for me :)`;
 
-  p.style.visibility = 'visible'; // Make it visible now that JS is ready
-  let i = 0;
-  const speed = 20; // Typing speed in milliseconds
+            const finalLineHTML = '<br><span class="centered-span">Explore, every page holds something....</span>';
 
-  function typeWriter() {
-    if (i < textToType.length) {
-      // Use a text node to prevent constant HTML re-parsing
-      p.textContent = textToType.slice(0, i + 1);
-      i++;
-      setTimeout(typeWriter, speed);
-    } else {
-      // Typing is done, now add the final line
-      p.innerHTML = p.innerHTML + finalLineHTML;
-      // Optional: Remove cursor after typing is fully complete
-      p.classList.remove('typing');
-    }
-  }
-  
-  p.classList.add('typing'); // Add cursor effect
-  typeWriter();
-});
-  </script>
+            if (!p) return;
+
+            p.style.visibility = 'visible'; // Make it visible now that JS is ready
+            let i = 0;
+            const speed = 25; // Typing speed in milliseconds
+
+            function typeWriter() {
+                if (i < textToType.length) {
+                    // Use innerHTML to correctly render line breaks from the template string
+                    p.innerHTML = textToType.slice(0, i + 1);
+                    i++;
+                    setTimeout(typeWriter, speed);
+                } else {
+                    // Typing is done, now add the final line
+                    p.innerHTML = p.innerHTML + finalLineHTML;
+                    // Optional: Remove cursor after typing is fully complete
+                    p.classList.remove('typing');
+                }
+            }
+            
+            p.classList.add('typing'); // Add cursor effect
+            typeWriter();
+        });
+    </script>
 </body>
 </html>
