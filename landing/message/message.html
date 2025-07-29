@@ -5,14 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>A Message For You</title>
   <link rel="shortcut icon" href="../logo.png" type="image/x-icon">
-  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-
   <style>
     :root {
         --dark-bg: #0d1a2f;
@@ -243,7 +241,7 @@
         padding: 60px 50px;
         max-width: 1000px;
         width: 90%;
-        text-align: center;
+        text-align: left;
     }
 
     .glass-message-box p {
@@ -256,6 +254,10 @@
         transform: translateY(25px);
         text-shadow: 0 0 8px rgba(144, 224, 239, 0.3);
         will-change: transform, opacity;
+    }
+
+    .glass-message-box p:not(:first-child) {
+        text-align: justify;
     }
 
     /* --- Quote Section --- */
@@ -304,6 +306,7 @@
     }
 
     .quote-text p {
+        text-align: justify;
         font-size: 1.1rem;
         line-height: 1.8;
         color: #c0c0c0;
@@ -487,16 +490,15 @@
       <p class="msg-line">Hey Saakshi,</p>
       <p class="msg-line">You’ve completed 20 years and stepped into your 21st.</p>
       <p class="msg-line">These years... some days haven’t been easy. You’ve faced a lot.
-But you made it through — strong, unshaken, and inspiring.</p>
-      <p class="msg-line">Never think you’re weak — because you’re not.</p>
+But you made it through strong, unshaken, and inspiring.</p>
+      <p class="msg-line">Never think you’re weak because you’re not.</p>
       <p class="msg-line">You’re capable of so much, and you carry something rare...
-A kind of magic that’s just yours — something the world doesn’t see often.</p>
-      <p class="msg-line">I admire you — truly.
+A kind of magic that’s just yours something the world doesn’t see often.</p>
+      <p class="msg-line">I admire you truly.
 You’re one of the best people I’ve ever known.</p>
       <p class="msg-line">Please… stay the same. Stay you, always.</p>
-      <p class="msg-line">And if there’s one thing I’ll always wish for —
-It’s that you live the happiest life possible.
-Because you genuinely, deeply deserve it. 💛</p>
+      <p class="msg-line">And if there’s one thing I’ll always wish for It’s that you live the happiest life possible.</p>
+      <p class="msg-line">Because you genuinely, deeply deserve it.💛</p>
     </div>
   </section>
 
@@ -508,11 +510,11 @@ Because you genuinely, deeply deserve it. 💛</p>
       <div class="quote-text">
         <blockquote>“From your notebook in college”</blockquote>
         <p>This quote helped me a lot to understand things…</p>
-        <p>I’ve read it so many times — even now.
+        <p>I’ve read it so many times even now.
 Every sentence in this quote carries its own weight... It’s the bitter truth of life.
 And honestly, I’m still surprised that you wrote this back in college.
 It literally says how to live life...</p>
-<p>I hope this helps you too — especially during those moments when you feel lost or unsure about the people around you.</p>
+<p>I hope this helps you too — especially during those moments when you feel lost or unsure about the people around you.</p>
       </div>
     </div>
   </section>
@@ -568,7 +570,7 @@ It literally says how to live life...</p>
                         document.querySelector('.timeline-svg').style.display = 'block';
                         gsap.from('.message-section', { opacity: 0, duration: 1 });
                         
-                        drawTimeline(); 
+                        setupTimeline();
                         ScrollTrigger.refresh();
                     }
                 });
@@ -607,11 +609,11 @@ It literally says how to live life...</p>
         const timelinePath = document.querySelector('.timeline-path');
         let timelineAnimation;
 
-        function drawTimeline() {
+        function setupTimeline() {
             const messageSection = document.querySelector('.message-section');
             const quoteSection = document.querySelector('.quote-section');
             
-            if (!messageSection || messageSection.style.display === 'none' || !quoteSection) return;
+            if (!messageSection || window.getComputedStyle(messageSection).display === 'none' || !quoteSection) return;
 
             const startY = messageSection.offsetTop - messageSection.offsetHeight / 2;
             const endY = quoteSection.offsetTop + quoteSection.offsetHeight / 2;
@@ -636,7 +638,7 @@ It literally says how to live life...</p>
             });
         }
         
-        window.addEventListener('resize', drawTimeline);
+        window.addEventListener('resize', setupTimeline);
 
         // --- Background Effects (Optimized for Mobile) ---
         const isMobile = window.innerWidth < 768;
@@ -673,9 +675,9 @@ It literally says how to live life...</p>
             const size = Math.random() * 2 + 1;
             sparkle.style.width = `${size}px`;
             sparkle.style.height = `${size}px`;
-            sparkle.style.left = Math.random() * 100 + "vw";
-            sparkle.style.animationDuration = (5 + Math.random() * 5) + "s";
-            sparkle.style.animationDelay = Math.random() * 6 + "s";
+            sparkle.style.left = `${Math.random() * 100}vw`;
+            sparkle.style.animationDuration = `${5 + Math.random() * 5}s`;
+            sparkle.style.animationDelay = `${Math.random() * 6}s`;
             container.appendChild(sparkle);
             setTimeout(() => sparkle.remove(), 10000);
         }
