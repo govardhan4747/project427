@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>more</title>
+    <link rel="shortcut icon" href="../logo.png" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .photo-container {
+            width: 90%;
+            max-width: 600px;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.8), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+        }
+
+        .display-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111111;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333333;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555555;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="photoContainer" class="photo-container">
+        <img src="collage.png" alt="College Campus Photo" class="display-img">
+    </div>
+</body>
+</html>
