@@ -401,31 +401,43 @@
          * Handles the form submission for manual login.
          * @param {Event} e - The form submission event.
          */
-        function handleLoginSubmit(e) {
-            e.preventDefault();
-            const name = nameInput.value;
-            const password = passwordInput.value;
+async function handleLoginSubmit(e) {
+    e.preventDefault();
+    const name = nameInput.value;
+    const password = passwordInput.value;
+    const apiEndpoint = '/.netlify/functions/login';
 
-            // Manual check for credentials
-            if (name.toLowerCase() === 'saakshi' && password === 'saakshi_jain20') {
-                if (soundsReady) {
-                    successSynth.triggerAttackRelease(["C4", "E4", "G4"], "8n");
-                }
-                showMessage('Login successful! Redirecting...', 'success');
-                
-                // Trigger the "Grand Exit" animation
-                authContainer.classList.add('exit');
-                
-                // Redirect after the animation finishes
-                setTimeout(() => {
-                    window.location.href = 'birthday-cake.html'; 
-                }, 1000); // Match this to animation duration
+    try {
+        const response = await fetch(apiEndpoint, {
+            method: 'POST',
+            body: JSON.stringify({ name, password }),
+        });
 
-            } else {
-                // On failed login, show the specified error message.
-                showMessage("don't know password better leave", 'error');
+        const result = await response.json();
+
+        if (result.success) {
+            // --- This is your existing success logic ---
+            if (soundsReady) {
+                successSynth.triggerAttackRelease(["C4", "E4", "G4"], "8n");
             }
+            showMessage('Login successful! Redirecting...', 'success');
+            
+            authContainer.classList.add('exit');
+            
+            setTimeout(() => {
+                window.location.href = 'birthday-cake.html'; 
+            }, 1000);
+            // --- End of success logic ---
+
+        } else {
+            // Show the error message from the server
+            showMessage(result.message, 'error');
         }
+    } catch (error) {
+        // Handle network errors
+        showMessage('Error connecting to the server.', 'error');
+    }
+}
         /**
          * Creates and animates the balloons.
          */
