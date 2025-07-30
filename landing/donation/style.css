@@ -168,31 +168,31 @@ main > div > a:hover {
 
 .swiper-slide--one {
   background: linear-gradient(to top, #0f2027, #203a4300, #2c536400),
-    url("1.jpeg")
+    url("https://res.cloudinary.com/dqw1t0dul/image/upload/q_auto,f_auto/v1753878404/1_c14ht1.jpg")
       no-repeat 50% 50% / cover;
 }
 
 .swiper-slide--two {
   background: linear-gradient(to top, #0f2027, #203a4300, #2c536400),
-    url("2.jpeg")
+    url("https://res.cloudinary.com/dqw1t0dul/image/upload/q_auto,f_auto/v1753878404/2_yj0wd9.jpg")
       no-repeat 50% 50% / cover;
 }
 
 .swiper-slide--three {
   background: linear-gradient(to top, #0f2027, #203a4300, #2c536400),
-    url("3.jpeg")
+    url("https://res.cloudinary.com/dqw1t0dul/image/upload/q_auto,f_auto/v1753878404/4_ufvq0s.jpg")
       no-repeat 50% 50% / cover;
 }
 
 .swiper-slide--four {
   background: linear-gradient(to top, #0f2027, #203a4300, #2c536400),
-    url("4.jpeg")
+    url("https://res.cloudinary.com/dqw1t0dul/image/upload/q_auto,f_auto/v1753878404/5_bxramq.jpg")
       no-repeat 50% 50% / cover;
 }
 
 .swiper-slide--five {
   background: linear-gradient(to top, #0f2027, #203a4300, #2c536400),
-    url("5.jpeg")
+    url("https://res.cloudinary.com/dqw1t0dul/image/upload/q_auto,f_auto/v1753878404/3_auprtb.jpg")
       no-repeat 50% 50% / cover;
 }
 
