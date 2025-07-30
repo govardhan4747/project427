@@ -53,7 +53,7 @@ function resetInactivityTimer() {
  inactivityTimer = setTimeout(() => {
  // After 10 minutes, redirect back to the login page
  window.location.replace('../../index.html'); // <-- CHANGE THIS
- }, 300000);
+ }, 180000);
 }
 
 // --- Event Listeners to Reset the Timer ---
