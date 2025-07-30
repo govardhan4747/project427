@@ -426,7 +426,7 @@ function resetInactivityTimer() {
  // Set a new timer for 10 minutes (600,000 milliseconds)
  inactivityTimer = setTimeout(() => {
  // After 10 minutes, redirect back to the login page
- window.location.href = '../../index.html'; // <-- CHANGE THIS
+ window.location.replace('../../index.html'); // <-- CHANGE THIS
  }, 300000);
 }
 
