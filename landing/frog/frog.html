@@ -170,6 +170,9 @@
     </div>
 
     <script>
+        if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+        window.location.replace('../../index.html');
+    }
         window.addEventListener('load', () => {
             // --- Text Animation Control ---
             const line1El = document.getElementById('line1');

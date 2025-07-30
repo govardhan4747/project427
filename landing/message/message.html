@@ -520,6 +520,9 @@ It literally says how to live life...</p>
   </section>
 
   <script>
+    if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+        window.location.replace('../../index.html');
+    }
     document.addEventListener("DOMContentLoaded", () => {
         gsap.registerPlugin(ScrollTrigger);
 

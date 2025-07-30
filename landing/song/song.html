@@ -361,6 +361,9 @@
 </section>
 
 <script>
+if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+        window.location.replace('../../index.html');
+    }
 document.addEventListener("DOMContentLoaded", () => {
   // --- 1. Select All Elements ---
   const video = document.getElementById("songVideo");

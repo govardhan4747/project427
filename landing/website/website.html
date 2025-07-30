@@ -233,6 +233,9 @@
     </main>
     
     <script>
+      if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+        window.location.replace('../../index.html');
+    }
         document.addEventListener('DOMContentLoaded', () => {
             const p = document.getElementById('animated-text');
             

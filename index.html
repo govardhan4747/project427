@@ -417,6 +417,7 @@ async function handleLoginSubmit(e) {
 
         if (result.success) {
             // --- This is your existing success logic ---
+            sessionStorage.setItem('isLoggedIn', 'true');
             if (soundsReady) {
                 successSynth.triggerAttackRelease(["C4", "E4", "G4"], "8n");
             }

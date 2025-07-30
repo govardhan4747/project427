@@ -329,6 +329,9 @@
       <source src="happy-birthday-266285.mp3" type="audio/mpeg" />
       </audio>
       <script>
+    if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+        window.location.replace('index.html');
+    }
   window.addEventListener('load', () => {
     // Enable background music at low volume
     const bgMusic = document.getElementById('bg-music');
