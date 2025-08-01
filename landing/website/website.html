@@ -3,6 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+      if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+        window.location.replace('../../index.html');
+    }
+    gatekeeperCheck();
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            gatekeeperCheck();
+        }
+    });
+    </script>
     <title>WHY..?</title>
     <link rel="shortcut icon" href="https://res.cloudinary.com/dqw1t0dul/image/upload/q_auto,f_auto/v1753877599/logo_bdhjes.png" type="image/x-icon">
     <!-- Google Fonts (including Michroma for the header) -->
@@ -233,9 +244,6 @@
     </main>
     
     <script>
-      if (sessionStorage.getItem('isLoggedIn') !== 'true') {
-        window.location.replace('../../index.html');
-    }
         document.addEventListener('DOMContentLoaded', () => {
             const p = document.getElementById('animated-text');
             

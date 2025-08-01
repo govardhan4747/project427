@@ -1,6 +1,3 @@
-if (sessionStorage.getItem('isLoggedIn') !== 'true') {
-        window.location.replace('../../index.html');
-    }
 var swiper = new Swiper(".swiper", {
   effect: "coverflow",
   grabCursor: true,

@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="https://res.cloudinary.com/dqw1t0dul/image/upload/q_auto,f_auto/v1753877599/logo_bdhjes.png" type="image/x-icon">
     <title>HBD saakshi</title>
+    <script>
+    if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+        window.location.replace('index.html');}
+    gatekeeperCheck();
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            gatekeeperCheck();
+        }
+    });
+    
+    </script>
     <style>
       @import url(https://fonts.googleapis.com/css?family=Lato:300italic);
 
@@ -329,9 +340,6 @@
       <source src="happy-birthday-266285.mp3" type="audio/mpeg" />
       </audio>
       <script>
-    if (sessionStorage.getItem('isLoggedIn') !== 'true') {
-        window.location.replace('index.html');
-    }
   window.addEventListener('load', () => {
     // Enable background music at low volume
     const bgMusic = document.getElementById('bg-music');
