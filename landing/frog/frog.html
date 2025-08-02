@@ -75,7 +75,6 @@
             }
         }
 
-
         /* Canvas for firefly effect */
         #firefly-canvas {
             position: fixed;
@@ -85,16 +84,6 @@
             height: 100%;
             z-index: 0; /* Behind content, in front of photos */
             pointer-events: none; /* Allows clicks to go through */
-        }
-
-        /* Style for the typing cursor, controlled by JavaScript */
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
-        .blinking-cursor {
-            animation: blink 1s step-end infinite;
-            margin-left: 3px;
-            color: #f1f5f9;
         }
         
         /* Animation for the frog jump, now applied to the frog group specifically */
@@ -116,34 +105,52 @@
             }
         }
 
+        /* EDITED: Utility class to hide scrollbar but keep functionality */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none; /* for Chrome, Safari, and Opera */
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* for IE and Edge */
+            scrollbar-width: none;  /* for Firefox */
+        }
+
     </style>
 </head>
 <body>
     <!-- Background elements -->
     <div id="background-slideshow">
-        <!-- New Frog and Pond Themed Image URLs -->
-        <img src="https://images.unsplash.com/photo-1593884782433-267d4157ab53?q=80&w=2000" alt="Green frog on a leaf">
-        <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=2000" alt="Lily pads on a calm pond">
-        <img src="https://images.unsplash.com/photo-1475189739312-5151b68925f7?q=80&w=2000" alt="Misty morning over a swamp">
-        <img src="https://images.unsplash.com/photo-1576785388348-17a854991993?q=80&w=2000" alt="Close up of a tree frog">
-        <img src="https://images.unsplash.com/photo-1542487154-45337b54d583?q=80&w=2000" alt="Water lilies in bloom">
-        <img src="https://images.unsplash.com/photo-1518495973542-4542c06a5843?q=80&w=2000" alt="Sunlight through a dense, green forest canopy">
-        <img src="https://images.unsplash.com/photo-1610247942225-527e7d3e117e?q=80&w=2000" alt="A small frog resting on a branch">
-        <img src="https://images.unsplash.com/photo-1440330033336-7dc69a195e87?q=80&w=2000" alt="Foggy river in a forest">
+        <!-- Frog and Pond Themed Image URLs -->
+        <img src="https://images.unsplash.com/photo-1593884782433-267d4157ab53?q=80&w=2000" alt="Green frog on a leaf" onerror="this.onerror=null;this.src='https://placehold.co/200x300/22c55e/ffffff?text=Frog+Image';">
+        <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=2000" alt="Lily pads on a calm pond" onerror="this.onerror=null;this.src='https://placehold.co/200x300/22c55e/ffffff?text=Pond+Image';">
+        <img src="https://images.unsplash.com/photo-1475189739312-5151b68925f7?q=80&w=2000" alt="Misty morning over a swamp" onerror="this.onerror=null;this.src='https://placehold.co/200x300/22c55e/ffffff?text=Swamp+Image';">
+        <img src="https://images.unsplash.com/photo-1576785388348-17a854991993?q=80&w=2000" alt="Close up of a tree frog" onerror="this.onerror=null;this.src='https://placehold.co/200x300/22c55e/ffffff?text=Tree+Frog';">
+        <img src="https://images.unsplash.com/photo-1542487154-45337b54d583?q=80&w=2000" alt="Water lilies in bloom" onerror="this.onerror=null;this.src='https://placehold.co/200x300/22c55e/ffffff?text=Lilies';">
+        <img src="https://images.unsplash.com/photo-1518495973542-4542c06a5843?q=80&w=2000" alt="Sunlight through a dense, green forest canopy" onerror="this.onerror=null;this.src='https://placehold.co/200x300/22c55e/ffffff?text=Forest';">
+        <img src="https://images.unsplash.com/photo-1610247942225-527e7d3e117e?q=80&w=2000" alt="A small frog resting on a branch" onerror="this.onerror=null;this.src='https://placehold.co/200x300/22c55e/ffffff?text=Frog+on+Branch';">
+        <img src="https://images.unsplash.com/photo-1440330033336-7dc69a195e87?q=80&w=2000" alt="Foggy river in a forest" onerror="this.onerror=null;this.src='https://placehold.co/200x300/22c55e/ffffff?text=River';">
     </div>
     <canvas id="firefly-canvas"></canvas>
 
     <!-- Main content area -->
     <main class="w-full h-screen flex justify-center items-center p-4 relative z-10">
-        <!-- Container with green glow and responsive padding -->
-        <div class="w-full max-w-2xl bg-black/30 backdrop-blur-sm text-white p-6 sm:p-8 md:p-12 rounded-xl shadow-2xl border border-green-400/20 shadow-[0_0_30px_rgba(74,222,128,0.4)]">
-            <!-- Responsive heading -->
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 text-center">A Note from the Pond</h1>
-            <!-- Responsive handwriting text -->
+        <!-- EDITED: Container sizing is now more responsive and scrollbar is hidden -->
+        <div class="w-full max-w-md sm:max-w-xl md:max-w-2xl lg:max-w-4xl bg-black/30 backdrop-blur-sm text-white p-6 sm:p-8 md:p-12 rounded-xl shadow-2xl border border-green-400/20 shadow-[0_0_30px_rgba(74,222,128,0.4)] max-h-[85vh] overflow-y-auto no-scrollbar">
+            <!-- Heading -->
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 text-center">Just Something I Wanted to Say</h1>
+            <!-- Text content, formatted with P tags for paragraphs -->
             <div class="font-handwriting text-xl sm:text-2xl md:text-3xl space-y-6 text-gray-100 leading-relaxed">
-                <p id="line1"></p>
-                <p id="line2"></p>
-                <p id="line3" class="text-center"></p>
+                <p>When we were texting, I felt like maybe you were at a low point, like something was off… so I tried to reconnect and be there for you.</p>
+                <p>Not to prove anything— but because I didn’t want to see you like that.</p>
+                <p>If I hadn’t seen things that way, maybe i could've approached things differently.</p>
+                <p>You’ve always, always unknowingly taught me so much — not always in the easiest ways, but I still learned. Because of you, I know how not to be. And for all those lessons, truly… thank you.</p>
+                <p>While building this website, I felt super happy seeing how it turned out — I genuinely loved making it. But in the last couple of days, I got nervous… wondering, “Did I go too far?” or “Will she see it differently?”</p>
+                <p>Still, I believe I did the right thing. My intentions were clean — I made this without expecting anything. I just wanted to do something... that felt right.</p>
+                <hr class="border-green-400/30 my-8">
+                <p>Be who you are — don’t change that in you. You’re strong. Never forget that. And I’m always here for you — no matter what. I’ll always be happy to help, whenever, with whatever.</p>
+                <p>Maybe I won’t get a chance again to say this like before…</p>
+                <p>But still — Happy Birthday, Koothi. And Happy Friendship Day.</p>
+                <p>Without expecting anything, I still quietly hope this little friendship stays alive - even gently.</p>
+                <p class="mt-8">stay this happy,always.</p>
             </div>
         </div>
     </main>
@@ -182,51 +189,6 @@
 
     <script>
         window.addEventListener('load', () => {
-            // --- Text Animation Control ---
-            const line1El = document.getElementById('line1');
-            const line2El = document.getElementById('line2');
-            const line3El = document.getElementById('line3');
-
-            // New frog-themed text
-            const text1 = "Listen closely... can you hear the gentle chorus of the pond? The crickets are singing, and the fireflies have begun to dance.";
-            const text2 = "Each ripple on the water tells a story, every croak is a verse in a song as old as the moonlight. This is a place of quiet magic.";
-            const text3 = "May you find a moment of peace here.";
-
-            function typeWriter(element, text, onComplete) {
-                let i = 0;
-                const speed = 50;
-                element.innerHTML = '';
-
-                const cursor = document.createElement('span');
-                cursor.className = 'blinking-cursor';
-                cursor.innerHTML = '|';
-                element.appendChild(cursor);
-
-                const typeInterval = setInterval(() => {
-                    if (i < text.length) {
-                        cursor.insertAdjacentText('beforebegin', text.charAt(i));
-                        i++;
-                    } else {
-                        clearInterval(typeInterval);
-                        cursor.remove();
-                        if (onComplete) onComplete();
-                    }
-                }, speed);
-            }
-            
-            setTimeout(() => {
-                typeWriter(line1El, text1, () => {
-                    setTimeout(() => {
-                        typeWriter(line2El, text2, () => {
-                            setTimeout(() => {
-                                typeWriter(line3El, text3, null);
-                            }, 700);
-                        });
-                    }, 700);
-                });
-            }, 1500);
-
-
             // --- Background Photo Animation ---
             const photoContainer = document.getElementById('background-slideshow');
             const allImages = Array.from(photoContainer.getElementsByTagName('img'));
@@ -240,9 +202,14 @@
                 // Dynamically set number of photos based on screen width
                 MAX_VISIBLE_PHOTOS = window.innerWidth < 768 ? 3 : 5;
                 
+                // Clear existing photos and restart the simulation
+                activeObjects.forEach(obj => {
+                    obj.el.style.opacity = 0; // Hide old elements
+                });
                 activeObjects.length = 0;
                 inactiveImages = [...allImages];
                 
+                // Spawn the initial set of photos
                 for (let i = 0; i < MAX_VISIBLE_PHOTOS; i++) {
                     if (inactiveImages.length > 0) {
                         spawnImage(inactiveImages.shift(), true);
@@ -253,10 +220,12 @@
             function spawnImage(img, isInitialSpawn = false) {
                 const imgWidth = img.offsetWidth;
                 const imgHeight = img.offsetHeight;
+                // Don't spawn if the image hasn't loaded its dimensions yet
                 if (imgWidth === 0) return;
 
                 let x, y, vx, vy;
 
+                // For the first set of images, place them randomly without overlap
                 if (isInitialSpawn) {
                     let positionOk = false;
                     let attempts = 0;
@@ -264,6 +233,7 @@
                         x = Math.random() * (photoContainerRect.width - imgWidth);
                         y = Math.random() * (photoContainerRect.height - imgHeight);
                         positionOk = true;
+                        // Check against other already placed images
                         for (const other of activeObjects) {
                             const dx = (x + imgWidth / 2) - (other.x + other.width / 2);
                             const dy = (y + imgHeight / 2) - (other.y + other.height / 2);
@@ -275,6 +245,7 @@
                         attempts++;
                     }
                 } else {
+                    // For new images, spawn them off-screen
                     const side = Math.floor(Math.random() * 4);
                     if (side === 0) { x = Math.random() * photoContainerRect.width; y = -imgHeight; } 
                     else if (side === 1) { x = photoContainerRect.width; y = Math.random() * photoContainerRect.height; }
@@ -282,6 +253,7 @@
                     else { x = -imgWidth; y = Math.random() * photoContainerRect.height; }
                 }
                 
+                // Set a random velocity towards the center of the screen
                 const targetX = photoContainerRect.width / 2 + (Math.random() - 0.5) * 400;
                 const targetY = photoContainerRect.height / 2 + (Math.random() - 0.5) * 400;
                 const angle = Math.atan2(targetY - y, targetX - x);
@@ -292,7 +264,7 @@
                 activeObjects.push({
                     el: img, x, y, vx, vy,
                     width: imgWidth, height: imgHeight,
-                    opacity: 0, state: 'fading-in'
+                    opacity: 0, state: 'fading-in' // Start by fading in
                 });
             }
 
@@ -300,6 +272,7 @@
                 for (let i = activeObjects.length - 1; i >= 0; i--) {
                     const obj = activeObjects[i];
 
+                    // Handle fading in and out
                     if (obj.state === 'fading-in') {
                         obj.opacity += 0.01;
                         if (obj.opacity >= 0.5) { obj.opacity = 0.5; obj.state = 'active'; }
@@ -308,18 +281,22 @@
                         if (obj.opacity <= 0) {
                             inactiveImages.push(obj.el);
                             activeObjects.splice(i, 1);
+                            // Spawn a new image to replace the one that faded out
                             if (inactiveImages.length > 0) spawnImage(inactiveImages.shift());
                             continue;
                         }
                     }
 
+                    // Move the object
                     obj.x += obj.vx;
                     obj.y += obj.vy;
 
+                    // If an object goes off-screen, start fading it out
                     if (obj.state === 'active' && (obj.x > photoContainerRect.width || obj.x < -obj.width || obj.y > photoContainerRect.height || obj.y < -obj.height)) {
                         obj.state = 'fading-out';
                     }
 
+                    // Collision detection with other photos
                     for (let j = i - 1; j >= 0; j--) {
                         const other = activeObjects[j];
                         if (obj.state !== 'active' || other.state !== 'active') continue;
@@ -329,6 +306,7 @@
                         const distance = Math.sqrt(dx * dx + dy * dy);
                         const minDistance = (obj.width / 2) + (other.width / 2);
 
+                        // If they collide, push them apart and swap velocities
                         if (distance < minDistance) {
                            const overlap = minDistance - distance;
                            const angle = Math.atan2(dy, dx);
@@ -348,6 +326,7 @@
                         }
                     }
                     
+                    // Apply styles to the element
                     obj.el.style.opacity = obj.opacity;
                     obj.el.style.transform = `translate3d(${obj.x}px, ${obj.y}px, 0)`;
                 }
@@ -392,6 +371,7 @@
                     fly.x += fly.vx;
                     fly.y += fly.vy;
 
+                    // Pulsate opacity
                     if (fly.opacityDirection === 1) {
                         fly.opacity += 0.01;
                         if (fly.opacity >= 1) fly.opacityDirection = -1;
@@ -400,6 +380,7 @@
                         if (fly.opacity <= 0.1) fly.opacityDirection = 1;
                     }
 
+                    // Wrap around the screen
                     if (fly.x < -10) fly.x = canvas.width + 10;
                     if (fly.x > canvas.width + 10) fly.x = -10;
                     if (fly.y < -10) fly.y = canvas.height + 10;
@@ -414,12 +395,13 @@
                 requestAnimationFrame(mainLoop);
             }
 
-            // --- Initialization ---
+            // --- Initialization and Resize Handling ---
             setupPhotos();
             setupFireflies();
             mainLoop();
 
             window.addEventListener('resize', () => {
+                // Use a timeout to avoid spamming the setup functions during resize
                 clearTimeout(window.resizeTimeout);
                 window.resizeTimeout = setTimeout(() => {
                     setupPhotos();
@@ -427,8 +409,8 @@
                 }, 250);
             });
         });
-        // --- Inactivity Timeout Logic ---
-let inactivityTimer;
+
+        let inactivityTimer;
 
 function resetInactivityTimer() {
  // Clear the previous timer
@@ -456,6 +438,5 @@ resetInactivityTimer();
  // You can also add any other onload functions for your cake page here.
 };
     </script>
-
 </body>
 </html>
