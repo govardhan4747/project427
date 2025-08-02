@@ -47,9 +47,9 @@
             position: absolute;
             top: 0;
             left: 0;
-            /* Mobile-first responsive styles */
-            width: 35vw;
-            max-width: 180px;
+            /* EDITED: Made images even smaller for mobile */
+            width: 18vw;
+            max-width: 60px;
             height: auto;
             border-radius: 0.75rem;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
@@ -59,19 +59,19 @@
             will-change: transform, opacity;
         }
 
-        /* Tablet and larger screens */
+        /* EDITED: Made images even smaller for tablets */
         @media (min-width: 640px) {
             #background-slideshow img {
-                width: 25vw;
-                max-width: 220px;
+                width: 12vw;
+                max-width: 100px;
             }
         }
         
-        /* Desktop screens */
+        /* EDITED: Made images even smaller for desktops */
         @media (min-width: 1024px) {
             #background-slideshow img {
-                width: 20vw;
-                max-width: 260px;
+                width: 10vw;
+                max-width: 130px;
             }
         }
 
@@ -120,14 +120,14 @@
     <!-- Background elements -->
     <div id="background-slideshow">
         <!-- Frog and Pond Themed Image URLs -->
-        <img src="https://images.unsplash.com/photo-1593884782433-267d4157ab53?q=80&w=2000" alt="Green frog on a leaf" onerror="this.onerror=null;this.src='https://placehold.co/200x300/22c55e/ffffff?text=Frog+Image';">
-        <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=2000" alt="Lily pads on a calm pond" onerror="this.onerror=null;this.src='https://placehold.co/200x300/22c55e/ffffff?text=Pond+Image';">
-        <img src="https://images.unsplash.com/photo-1475189739312-5151b68925f7?q=80&w=2000" alt="Misty morning over a swamp" onerror="this.onerror=null;this.src='https://placehold.co/200x300/22c55e/ffffff?text=Swamp+Image';">
-        <img src="https://images.unsplash.com/photo-1576785388348-17a854991993?q=80&w=2000" alt="Close up of a tree frog" onerror="this.onerror=null;this.src='https://placehold.co/200x300/22c55e/ffffff?text=Tree+Frog';">
-        <img src="https://images.unsplash.com/photo-1542487154-45337b54d583?q=80&w=2000" alt="Water lilies in bloom" onerror="this.onerror=null;this.src='https://placehold.co/200x300/22c55e/ffffff?text=Lilies';">
-        <img src="https://images.unsplash.com/photo-1518495973542-4542c06a5843?q=80&w=2000" alt="Sunlight through a dense, green forest canopy" onerror="this.onerror=null;this.src='https://placehold.co/200x300/22c55e/ffffff?text=Forest';">
-        <img src="https://images.unsplash.com/photo-1610247942225-527e7d3e117e?q=80&w=2000" alt="A small frog resting on a branch" onerror="this.onerror=null;this.src='https://placehold.co/200x300/22c55e/ffffff?text=Frog+on+Branch';">
-        <img src="https://images.unsplash.com/photo-1440330033336-7dc69a195e87?q=80&w=2000" alt="Foggy river in a forest" onerror="this.onerror=null;this.src='https://placehold.co/200x300/22c55e/ffffff?text=River';">
+        <img src="https://res.cloudinary.com/dqw1t0dul/image/upload/f_auto,q_auto/v1754138369/IMG_20250802_180450_dfr128.jpg" alt="Green frog on a leaf" >
+        <img src="https://res.cloudinary.com/dqw1t0dul/image/upload/f_auto,q_auto/v1754138369/IMG_20250802_180539_eittfn.jpg" alt="Lily pads on a calm pond" >
+        <img src="https://res.cloudinary.com/dqw1t0dul/image/upload/f_auto,q_auto/v1754138370/IMG_20250802_180553_ebnbd4.jpg" alt="Misty morning over a swamp" >
+        <img src="https://res.cloudinary.com/dqw1t0dul/image/upload/v1754138371/IMG_20250802_180508_hfvc2s.jpg" alt="Close up of a tree frog">
+        <img src="https://res.cloudinary.com/dqw1t0dul/image/upload/f_auto,q_auto/v1754138369/IMG_20250802_180524_yixfjf.jpg" alt="Water lilies in bloom" >
+        <img src="https://res.cloudinary.com/dqw1t0dul/image/upload/f_auto,q_auto/v1754138369/IMG_20250802_180621_b6bodm.jpg" alt="Sunlight through a dense, green forest canopy" >
+        <img src="https://res.cloudinary.com/dqw1t0dul/image/upload/f_auto,q_auto/v1754138370/IMG_20250802_180427_jgyulp.jpg" alt="A small frog resting on a branch" >
+        <img src="https://res.cloudinary.com/dqw1t0dul/image/upload/c_auto,h_150,w_75/e_blur:61/IMG_20250802_180603_upd7ol.jpg" alt="Foggy river in a forest">
     </div>
     <canvas id="firefly-canvas"></canvas>
 
@@ -276,7 +276,7 @@
                     // Handle fading in and out
                     if (obj.state === 'fading-in') {
                         obj.opacity += 0.01;
-                        if (obj.opacity >= 0.5) { obj.opacity = 0.5; obj.state = 'active'; }
+                        if (obj.opacity >= 0.20) { obj.opacity = 0.20; obj.state = 'active'; }
                     } else if (obj.state === 'fading-out') {
                         obj.opacity -= 0.005;
                         if (obj.opacity <= 0) {
