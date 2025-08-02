@@ -560,7 +560,7 @@ height: 400px;
  }
  
   /* --- Game Section (Untouched as requested) --- */
- .game-section { padding: 40px 15px; }
+ .game-section { padding: 40px 15px; padding-bottom: 0px; }
  .line-title { width: 90%; margin-left: 5%;font-size: 15px; }
  .game-section .item {
  width: 260px;
@@ -599,11 +599,12 @@ height: 400px;
 body{
         background-color: #0a0a0a;
     }
-
+#frg {
+display: flex;
+justify-content: flex-end;
+}
 .frog-button {
-  margin-left: 95%;
-  display: inline-block;
-  padding: 10px 30px;
+  padding: 10px 20px;
   border-radius: 9999px;
   background-image: 
     linear-gradient(to bottom right, rgba(0, 77, 0, 0.85), rgba(27, 94, 32, 0.85));
